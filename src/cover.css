@@ -1,0 +1,155 @@
+/* Gold brush lettering and ivory stationery, based on the supplied reference. */
+.cover {
+  height: 100svh;
+  min-height: 660px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f1ecd9;
+  color: #302719;
+}
+.cover-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  transition:
+    transform 1.1s cubic-bezier(0.3, 0, 0.2, 1),
+    opacity 0.9s;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.cover-content {
+  position: absolute;
+  top: 40%;
+  left: 29%;
+  width: 64%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition:
+    transform 0.8s,
+    opacity 0.5s;
+}
+.cover-note {
+  color: #29261f;
+  font-family: "Caveat", cursive;
+  font-size: clamp(24px, 6.8vw, 32px);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+}
+.cover-venue {
+  margin-top: 20px;
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #514632;
+}
+.cover-korean {
+  margin-top: 8px;
+  color: #62553e;
+  font-size: 9px;
+  line-height: 1.8;
+  letter-spacing: 0.15px;
+}
+.open-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 15px;
+  min-height: 44px;
+  padding: 10px 5px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #8a6c39;
+  color: #49391f;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+.open-link:hover:not(:disabled) {
+  background: #ae883c12;
+  color: #1c170e;
+  border-color: #302719;
+  filter: none;
+}
+.open-link:focus-visible {
+  outline: 2px solid #614617;
+}
+.cover-bottom {
+  position: absolute;
+  bottom: max(25px, env(safe-area-inset-bottom));
+  left: 18px;
+  right: 18px;
+  text-align: center;
+  transition: opacity 0.5s;
+}
+.cover-bottom .eyebrow {
+  color: #65583e;
+  font-size: 6px;
+  letter-spacing: 1.55px;
+}
+.preview-label {
+  position: absolute;
+  right: 8px;
+  top: 46%;
+  writing-mode: vertical-rl;
+  color: #716342;
+  font-size: 5px;
+  letter-spacing: 1.4px;
+}
+.opening .cover-art {
+  transform: translateY(-3%) scale(1.07);
+  opacity: 0;
+}
+.opening .cover-content {
+  transform: translateY(-13px);
+  opacity: 0;
+}
+.opening .cover-bottom,
+.opening .preview-label {
+  opacity: 0;
+}
+@media (min-width: 600px) {
+  .cover {
+    height: calc(100svh - 50px);
+  }
+}
+@media (max-width: 350px) {
+  .cover {
+    min-height: 650px;
+  }
+  .cover-content {
+    left: 29%;
+    width: 65%;
+    top: 39.5%;
+  }
+  .cover-note {
+    font-size: 23px;
+  }
+  .cover-venue {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    margin-top: 16px;
+  }
+  .cover-korean {
+    font-size: 8px;
+  }
+  .open-link {
+    margin-top: 10px;
+  }
+}

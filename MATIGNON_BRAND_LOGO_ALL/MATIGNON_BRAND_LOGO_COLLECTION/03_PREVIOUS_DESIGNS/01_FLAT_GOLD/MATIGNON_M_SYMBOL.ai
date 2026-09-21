@@ -1,0 +1,51 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: Matignon vector artwork
+%%Title: MATIGNON_M_SYMBOL
+%%BoundingBox: 0 0 440 360
+%%DocumentData: Clean7Bit
+%%LanguageLevel: 2
+%%Pages: 1
+%%AI3_ColorUsage: Color
+%%EndComments
+%%BeginProlog
+/m {moveto} bind def /l {lineto} bind def /c {curveto} bind def
+/h {closepath} bind def /f {eofill} bind def
+/Xa {setrgbcolor} bind def
+%%EndProlog
+%%Page: 1 1
+0.823529 0.686275 0.439216 Xa
+newpath
+52 306 m
+124 306 l
+224 205 l
+205 179 l
+115 293 l
+115 92 l
+115 62 120 54 142 52 c
+53 52 l
+77 55 80 64 80 92 c
+80 267 l
+80 294 75 302 52 306 c
+ h
+f
+newpath
+321 306 m
+389 306 l
+366 302 362 292 362 267 c
+362 93 l
+362 65 366 55 389 52 c
+300 52 l
+323 55 327 65 327 93 c
+327 293 l
+221 152 l
+205 130 206 108 218 95 c
+225 88 234 87 243 94 c
+212 55 l
+186 78 181 107 198 142 c
+207 161 221 177 236 197 c
+321 306 l
+ h
+f
+showpage
+%%Trailer
+%%EOF
