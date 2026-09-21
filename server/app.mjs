@@ -4,8 +4,12 @@ import { resolve, extname, sep } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { randomUUID } from "node:crypto";
 
-export function createApp(env = process.env) {
+export function createRequestHandler(env = process.env) {
   const live = env.RSVP_MODE === "live";
+  if (live && env.VERCEL)
+    throw new Error(
+      "Live RSVP requires durable storage; local SQLite is not supported on Vercel.",
+    );
   if (
     live &&
     (!env.EVENT_START ||
@@ -38,7 +42,7 @@ export function createApp(env = process.env) {
     privacyNotice: env.PRIVACY_NOTICE || null,
   };
   const buckets = new Map();
-  const server = createServer(async (req, res) => {
+  const handler = async (req, res) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader("X-Frame-Options", "DENY");
@@ -73,13 +77,21 @@ export function createApp(env = process.env) {
       buckets.set(ip, bucket);
       let raw = "";
       try {
-        for await (const chunk of req) {
-          raw += chunk;
-          if (Buffer.byteLength(raw) > 4096) {
-            json(413, { error: "요청이 너무 큽니다." });
-            return;
+        // Vercel parses JSON before calling Node handlers; standalone Node
+        // provides an unread request stream instead.
+        if (req.body !== undefined) {
+          raw =
+            typeof req.body === "string" || Buffer.isBuffer(req.body)
+              ? req.body.toString()
+              : JSON.stringify(req.body);
+        } else {
+          for await (const chunk of req) {
+            raw += chunk;
+            if (Buffer.byteLength(raw) > 4096) break;
           }
         }
+        if (Buffer.byteLength(raw) > 4096)
+          return json(413, { error: "요청이 너무 큽니다." });
       } catch {
         return;
       }
@@ -182,7 +194,14 @@ export function createApp(env = process.env) {
     } catch {
       json(404, { error: "페이지를 찾을 수 없습니다." });
     }
-  });
-  server.on("close", () => db?.close());
+  };
+  handler.close = () => db?.close();
+  return handler;
+}
+
+export function createApp(env = process.env) {
+  const handler = createRequestHandler(env);
+  const server = createServer(handler);
+  server.on("close", handler.close);
   return server;
 }

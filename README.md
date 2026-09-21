@@ -36,6 +36,20 @@ npm run export:rsvp --silent > responses.json
 
 생성된 응답 파일은 개인정보이므로 공개 폴더나 Git에 넣지 마세요.
 
+## Vercel 배포
+
+Vercel은 Vite 프런트엔드(`dist`)와 `api/event.js`, `api/rsvp.js`를 함께 배포합니다. 두 함수는 로컬 Node 서버와 동일한 요청 처리 로직을 사용합니다. 개발용 Vite 프록시나 `npm start`는 Vercel에서 API를 생성하지 않습니다. Node 버전은 24.x로 고정합니다.
+
+현재 Vercel 배포는 `RSVP_MODE=preview`(기본값)로 초대장 조회와 RSVP 미리보기를 제공합니다. 개인정보를 저장하지 않습니다. 실제 응답 수집에는 영구 저장소 연동이 필요하며, Vercel에서 `RSVP_MODE=live`만 켜면 SQLite 데이터가 유실될 수 있어 명시적으로 차단합니다. 영구 디스크가 있는 독립 Node 서버의 live 모드는 계속 지원됩니다.
+
+배포 후 `/api/event`가 HTTP 200 JSON을 반환하는지 확인하고, 공개 주소를 대상으로 브라우저 검증을 실행합니다:
+
+```powershell
+$env:TEST_URL='https://matignon.vercel.app'
+$env:PLAYWRIGHT_CHANNEL='chrome'
+npm run verify
+```
+
 ## 검증
 
 ```powershell

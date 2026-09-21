@@ -115,3 +115,10 @@ test("live mode persists exactly once, rejects conflicting retry, survives resta
 test("live mode refuses incomplete event setup", () => {
   assert.throws(() => createApp({ RSVP_MODE: "live" }), /requires valid/);
 });
+
+test("Vercel refuses live mode backed by ephemeral SQLite", () => {
+  assert.throws(
+    () => createApp({ RSVP_MODE: "live", VERCEL: "1" }),
+    /requires durable storage/,
+  );
+});

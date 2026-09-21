@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "engines": {
-    "node": ">=24"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "concurrently -k \"node --env-file-if-exists=.env server/index.mjs\" \"vite --host 0.0.0.0\"",
@@ -12,7 +12,7 @@
     "start": "node --env-file-if-exists=.env server/index.mjs",
     "test": "node --test server/*.test.mjs",
     "verify": "node scripts/verify.mjs",
-    "format:check": "prettier --check src server scripts package.json tsconfig.json vite.config.ts index.html DESIGN.md README.md docs",
+    "format:check": "prettier --check src server api scripts vercel.json package.json tsconfig.json vite.config.ts index.html DESIGN.md README.md docs",
     "export:rsvp": "node --env-file-if-exists=.env scripts/export.mjs"
   },
   "dependencies": {
