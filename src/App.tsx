@@ -31,40 +31,6 @@ const key = () =>
   crypto.randomUUID?.() ||
   `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
 
-function Ornament() {
-  return (
-    <svg
-      viewBox="0 0 240 240"
-      fill="none"
-      stroke="currentColor"
-      aria-hidden="true"
-    >
-      <circle cx="120" cy="120" r="112" strokeWidth="0.7" />
-      <circle cx="120" cy="120" r="103" strokeWidth="2" />
-      <circle cx="120" cy="120" r="96" strokeDasharray="1 5" strokeWidth="2" />
-      {Array.from({ length: 16 }, (_, i) => (
-        <g key={i} transform={`rotate(${i * 22.5} 120 120)`}>
-          <path
-            d="M120 30 C95 53 105 78 120 91 C135 78 145 53 120 30Z"
-            strokeWidth="1"
-          />
-          <path
-            d="M120 43 C111 59 113 72 120 80 C127 72 129 59 120 43Z"
-            strokeWidth="0.6"
-          />
-          <path
-            d="M116 19 L120 11 L124 19 L120 25Z"
-            fill="currentColor"
-            stroke="none"
-          />
-        </g>
-      ))}
-      <circle cx="120" cy="120" r="34" strokeWidth="1.5" />
-      <circle cx="120" cy="120" r="27" strokeWidth="0.5" />
-    </svg>
-  );
-}
-
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [opening, setOpening] = useState(false);
@@ -287,26 +253,15 @@ export default function App() {
     <div className={`experience ${opened ? "is-open" : ""}`}>
       {!opened ? (
         <main className={`cover ${opening ? "opening" : ""}`}>
-          <div className="cover-frame" aria-hidden="true" />
-          <div className="cover-ornament ornament-top" aria-hidden="true">
-            <Ornament />
-          </div>
-          <div className="cover-ornament ornament-bottom" aria-hidden="true">
-            <Ornament />
-          </div>
+          <img
+            className="cover-art"
+            src="/assets/calligraphy-cover-black.png"
+            alt=""
+            fetchPriority="high"
+          />
+          <h1 className="visually-hidden">You're Invited</h1>
           <div className="cover-content">
-            <span className="cover-monogram" aria-hidden="true">
-              M
-            </span>
             <p className="eyebrow">A PRIVATE EVENING</p>
-            <h1 className="cover-title">
-              You're
-              <br />
-              <span>Invited</span>
-            </h1>
-            <div className="cover-rule" aria-hidden="true">
-              <span />✦<span />
-            </div>
             <p className="cover-venue">
               MATIGNON <span>SEOUL</span>
             </p>

@@ -1,154 +1,71 @@
-/* Gold calligraphy, fine framing and cropped rosettes on black stock. */
+/* Original oversized gold brush calligraphy, adapted to black stock. */
 .cover {
-  min-height: max(680px, 100svh);
+  height: 100svh;
+  min-height: 680px;
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: var(--paper);
   color: var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 68px 28px;
 }
-.cover::before {
-  content: "";
+.cover-art {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: radial-gradient(ellipse at 50% 42%, #d2af6c08, transparent 66%);
-}
-.cover-frame {
-  position: absolute;
-  inset: 20px;
-  border: 1px solid #b18b4866;
-  outline: 1px solid #b18b4826;
-  outline-offset: 5px;
-  pointer-events: none;
-}
-.cover-frame::before,
-.cover-frame::after {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
-  background: var(--paper);
-}
-.cover-frame::before {
-  top: -4px;
-  right: -4px;
-}
-.cover-frame::after {
-  bottom: -4px;
-  left: -4px;
-}
-.cover-ornament {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  color: #b18b48;
-  opacity: 0.7;
-  background: var(--paper);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.cover-ornament svg {
-  display: block;
   width: 100%;
   height: 100%;
-}
-.ornament-top {
-  top: -117px;
-  left: -103px;
-  transform: rotate(11deg);
-}
-.ornament-bottom {
-  bottom: -121px;
-  right: -92px;
-  transform: rotate(-5deg);
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  transition:
+    transform 1s cubic-bezier(0.3, 0, 0.2, 1),
+    opacity 0.8s;
 }
 .cover-content {
-  width: 100%;
-  position: relative;
+  position: absolute;
+  top: 41%;
+  left: 30%;
+  width: 63%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   transition:
-    transform 0.9s,
-    opacity 0.6s;
-}
-.cover-monogram {
-  display: grid;
-  place-items: center;
-  font-family: var(--display);
-  font-style: italic;
-  font-size: 28px;
-  line-height: 1;
-  width: 49px;
-  height: 60px;
-  border: 1px solid #b18b4870;
-  border-radius: 50%;
-  margin-bottom: 28px;
+    transform 0.8s,
+    opacity 0.5s;
 }
 .cover-content > .eyebrow {
   font-family: var(--display);
-  font-size: 12px;
-  letter-spacing: 3px;
-}
-.cover-title {
-  font-family: var(--script);
-  font-size: clamp(84px, 25vw, 117px);
-  line-height: 0.97;
-  margin: 36px 0 27px;
-  font-weight: 400;
-  color: var(--gold);
-  text-shadow: 0 1px 18px #d2af6c10;
-}
-.cover-title > span {
-  padding-right: 12px;
-}
-.cover-rule {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  font-size: 13px;
-  margin: 0 0 27px;
-}
-.cover-rule > span {
-  width: 42px;
-  height: 1px;
-  background: #b18b4870;
+  font-size: 10px;
+  letter-spacing: 2.5px;
 }
 .cover-venue {
+  margin-top: 17px;
   font-family: var(--display);
-  font-size: 23px;
-  letter-spacing: 4px;
+  font-size: 21px;
+  letter-spacing: 3px;
 }
 .cover-venue > span {
   display: block;
   font-family: var(--body);
-  font-size: 8px;
-  letter-spacing: 5px;
-  margin-top: 7px;
+  font-size: 7px;
+  letter-spacing: 4px;
+  margin-top: 6px;
 }
 .cover-korean {
   color: var(--muted);
-  font-size: 11px;
-  margin-top: 22px;
+  font-size: 10px;
+  margin-top: 17px;
   line-height: 1.9;
 }
 .open-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 37px;
-  margin-top: 31px;
-  min-height: 48px;
-  padding: 12px 19px;
-  background: transparent;
+  gap: 27px;
+  margin-top: 18px;
+  min-height: 44px;
+  padding: 10px 15px;
+  background: var(--paper);
   border: 1px solid #b18b4880;
   color: var(--gold);
   font-size: 11px;
@@ -160,7 +77,7 @@
 }
 .preview-label {
   position: absolute;
-  bottom: 34px;
+  bottom: 20px;
   left: 0;
   right: 0;
   text-align: center;
@@ -168,13 +85,12 @@
   letter-spacing: 2px;
   color: var(--muted);
 }
-.opening .cover-content {
-  transform: translateY(-15px);
+.opening .cover-art {
+  transform: translateY(-3%) scale(1.06);
   opacity: 0;
 }
-.opening .cover-ornament,
-.opening .cover-frame {
-  transition: opacity 0.8s;
+.opening .cover-content {
+  transform: translateY(-13px);
   opacity: 0;
 }
 .visually-hidden {
@@ -190,31 +106,20 @@
 }
 @media (min-width: 600px) {
   .cover {
-    min-height: max(740px, calc(100svh - 50px));
+    height: calc(100svh - 50px);
   }
 }
-@media (max-height: 740px) and (max-width: 599px) {
-  .cover {
-    padding-block: 58px;
-    min-height: max(660px, 100svh);
-  }
-  .cover-monogram {
-    margin-bottom: 21px;
-    width: 40px;
-    height: 48px;
-    font-size: 24px;
-  }
-  .cover-title {
-    margin-top: 27px;
-    margin-bottom: 22px;
-  }
-  .cover-rule {
-    margin-bottom: 21px;
+@media (max-width: 350px) {
+  .cover-venue {
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-top: 14px;
   }
   .cover-korean {
-    margin-top: 17px;
+    font-size: 9px;
+    margin-top: 13px;
   }
   .open-link {
-    margin-top: 23px;
+    margin-top: 13px;
   }
 }

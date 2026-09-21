@@ -37,11 +37,11 @@ components:
 
 ### Creative North Star
 
-The user's black-and-gold invitation reference supersedes the earlier ivory stationery. Black stock, champagne-gold calligraphy, fine rectangular borders and cropped rosettes establish the cover. Inside, one jazz photograph and a single Korean invitation line lead directly to date, venue and RSVP. This is a short invitation, not a long brand landing page.
+The user's black-and-gold invitation reference supersedes the earlier ivory stationery. The original oversized gold brush-calligraphy artwork is restored on black stock, preserving the sweeping Y and I flourishes and center-right live copy. Inside, one jazz photograph and a single Korean invitation line lead directly to date, venue and RSVP. This is a short invitation, not a long brand landing page.
 
 ### Product context and register
 
-Korean-speaking guests at a MATIGNON brand event/private party, entering by mobile link or QR. English calligraphy establishes mood; Korean owns actions and essential information. Unknown event dates and addresses remain explicitly pending. Decorative rosettes appear only on the cover. The existing accessible RSVP, receipt and sharing flows are retained. Runtime token owner is src/styles.css :root; this frontmatter mirrors its values. src/brand.css owns internal layout and src/cover.css owns the cover. Both consume the shared tokens.
+Korean-speaking guests at a MATIGNON brand event/private party, entering by mobile link or QR. English calligraphy establishes mood; Korean owns actions and essential information. Unknown event dates and addresses remain explicitly pending. Cover ornaments and the font-based title were removed in favor of the original expressive brush artwork. The existing accessible RSVP, receipt and sharing flows are retained. Runtime token owner is src/styles.css :root; this frontmatter mirrors its values. src/brand.css owns internal layout and src/cover.css owns the cover. Both consume the shared tokens.
 
 ## Colors
 
@@ -49,7 +49,7 @@ Paper and ink use #10110f black; panel is #191a17. Gold #d2af6c supplies display
 
 ## Typography
 
-Locally hosted Pinyon Script owns the live HTML cover title and short display accents. Cormorant Garamond owns serif headings and wordmarks; Noto Sans KR owns Korean copy and controls. Cover title 84–117px; inner title 67–76px paired with 38–43px serif; body 12–13px; form input 16px. No raster lettering is required. Decorative small labels never carry essential information alone.
+The cover uses public/assets/calligraphy-cover-black.png, a black-background edit of the original brush-calligraphy artwork. Its accessible H1 remains HTML. Locally hosted Pinyon Script owns inner-page display accents. Cormorant Garamond owns serif headings and wordmarks; Noto Sans KR owns Korean copy and controls. The cover artwork fills its reserved viewport, with live venue/copy/action in the center-right whitespace. Inner title 67–76px paired with 38–43px serif; body 12–13px; form input 16px. Decorative small labels never carry essential information alone.
 
 ## Layout
 
@@ -57,11 +57,11 @@ Single document scroller, 320–480px mobile canvas, centered on desktop. Cover 
 
 ## Elevation & Depth
 
-Near-black surfaces, fine gold frames and restrained dimmed backdrops. No light cards or long alternating editorial sections. The cover rosettes are vector ornament, not embedded text.
+Near-black surfaces, fine gold frames and restrained dimmed backdrops. No light cards or long alternating editorial sections. The cover preserves textured gold brush lettering from the earlier artwork.
 
 ## Shapes
 
-Square controls, thin borders, cropped circular rosettes at opposing cover corners, and an oval M monogram. The ornament is deliberately confined to the cover.
+Square controls and thin gold borders. The cover uses the expressive lettering itself as ornament; no extra rosettes or monogram frame.
 
 ## Components
 
