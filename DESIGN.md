@@ -1,18 +1,17 @@
 ---
 version: alpha
 name: MATIGNON Invitation
-description: A premium ivory-and-antique-gold RSVP invitation with calligraphy, framed jazz photography, and stationery response cards.
+description: A concise black-and-champagne-gold private jazz invitation with live calligraphy and fine ornamental framing.
 colors:
-  ink: "#191210"
-  panel: "#f8f4e9"
-  gold: "#795f2e"
-  gold-light: "#dbc294"
-  text: "#3d3428"
-  muted: "#726652"
-  line: "#cbbda5"
-  wine: "#381b20"
-  paper: "#f1ecde"
-  error: "#a43830"
+  ink: "#10110f"
+  panel: "#191a17"
+  gold: "#d2af6c"
+  gold-light: "#ead2a2"
+  text: "#eee5d3"
+  muted: "#ada593"
+  line: "#4b4332"
+  paper: "#10110f"
+  error: "#f2a29a"
 typography:
   display:
     fontFamily: "Cormorant Garamond, Georgia, serif"
@@ -25,7 +24,7 @@ rounded:
   sheet: "4px"
 spacing:
   page-max: "480px"
-  section-gap: "84px"
+  section-gap: "28px"
 components:
   button: {}
   dialog: {}
@@ -38,45 +37,41 @@ components:
 
 ### Creative North Star
 
-The entire experience now follows the user's premium RSVP stationery direction. The first cover retains the supplied-reference gold brush-calligraphy on ivory paper. Opening it continues into ivory stationery with antique-gold script, dark ink serif text, generous centered spacing, and framed jazz-lounge photographs. The RSVP invitation, response form, share sheet and receipt belong to the same paper suite. Burgundy is reserved for selected controls and primary actions. Generated venue images remain labeled as concepts rather than actual venue photography.
+The user's black-and-gold invitation reference supersedes the earlier ivory stationery. Black stock, champagne-gold calligraphy, fine rectangular borders and cropped rosettes establish the cover. Inside, one jazz photograph and a single Korean invitation line lead directly to date, venue and RSVP. This is a short invitation, not a long brand landing page.
 
 ### Product context and register
 
-Korean-speaking guests at a brand event/private party. Mobile link/QR entry, one-hand reading and RSVP. Hybrid brand storytelling plus a short response form. English display copy is atmospheric; Korean owns all instructions, statuses and errors. Market location beyond the supplied Seoul brand is unconfirmed. No confirmed date, address, privacy policy or public deployment is fabricated. Signature: personal calligraphy and fine-framed photography as a coordinated invitation suite. Restraint: script only in titles/signatures; forms stay readable and semantic. Avoid glitter, full-screen dark marketing panels, synthetic arches, confetti, audio autoplay and invented live event details.
-
-Runtime token owner is `src/styles.css` `:root`; frontmatter mirrors its semantic values. Shared form/dialog rules remain there. `src/brand.css` owns the jazz content surfaces; `src/cover.css` owns the reference-specific ivory cover, paper/dark-ink colors and mobile layout. The prior photographic cover rules were removed. Scene-specific translucent colors are decorative lighting only. No alternate theme adapter exists.
+Korean-speaking guests at a MATIGNON brand event/private party, entering by mobile link or QR. English calligraphy establishes mood; Korean owns actions and essential information. Unknown event dates and addresses remain explicitly pending. Decorative rosettes appear only on the cover. The existing accessible RSVP, receipt and sharing flows are retained. Runtime token owner is src/styles.css :root; this frontmatter mirrors its values. src/brand.css owns internal layout and src/cover.css owns the cover. Both consume the shared tokens.
 
 ## Colors
 
-Paper and panel are two warm ivory stationery surfaces. Ink/text supply dark print; muted is legible brown secondary copy; gold is antique bronze-gold dark enough for small labels on ivory; wine is the selected/primary action color with panel-colored text. Line defines hairline frames and fields; error is readable deep red. Gold-light supports toast accents. Forced colors uses native control colors. There is one consistent light stationery theme; venue photographs supply atmospheric dark contrast.
+Paper and ink use #10110f black; panel is #191a17. Gold #d2af6c supplies display text and primary fill, gold-light supplies hover. Text #eee5d3 and muted #ada593 remain legible on black. Line #4b4332 is decorative separation; interactive fields and selected controls use stronger gold edges. Error #f2a29a supplies readable inline feedback. QR codes retain a light scan surface. There is one dark theme across cover, invitation, form and receipt.
 
 ## Typography
 
-Locally hosted Pinyon Script 400 owns expressive title words and signatures; Cormorant Garamond 400 owns companion serif headings and the wordmark; Noto Sans KR 400 owns Korean copy and controls. Hero script 74–83px with 42–47px serif, RSVP script 51–60px, modal script 43–53px, Korean body 10–14px, input 16px to avoid iOS zoom. Tiny uppercase English text is decorative labeling and never the only essential instruction.
-
-The first cover's large calligraphy is raster artwork; a visually hidden H1 provides its textual equivalent. Locally hosted Caveat 500 is the central handwritten-style invitation copy. Action, venue and Korean copy remain real HTML, not baked into the image. The flat stationery artwork scales with the mobile canvas to keep its reserved central whitespace aligned with live copy; photographic content keeps `object-fit: cover`.
+Locally hosted Pinyon Script owns the live HTML cover title and short display accents. Cormorant Garamond owns serif headings and wordmarks; Noto Sans KR owns Korean copy and controls. Cover title 84–117px; inner title 67–76px paired with 38–43px serif; body 12–13px; form input 16px. No raster lettering is required. Decorative small labels never carry essential information alone.
 
 ## Layout
 
-Single document scroller, 320–480px mobile canvas; desktop is a centered preview. Sections use 25–32px insets and approximately 84px vertical spacing. Sticky response bar and modal include safe-area insets. Dialog has its own scroll at max 90dvh. Inputs remain in natural flow. Reserved image dimensions prevent layout shifts.
+Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content is approximately 1100px tall at 390px width, with 22–28px insets. One image, one invitation line, two detail rows and one RSVP section. Sticky response bar and sheets include safe-area insets.
 
 ## Elevation & Depth
 
-Photography sits inside fine double frames with subtle paper shadows. The RSVP invitation and receipt use fine inset outlines, without generic dashboard cards. The sticky bar is translucent ivory with a burgundy action. Dialog backdrops are softly dimmed; dialogs are light paper.
+Near-black surfaces, fine gold frames and restrained dimmed backdrops. No light cards or long alternating editorial sections. The cover rosettes are vector ornament, not embedded text.
 
 ## Shapes
 
-Square controls, fine borders, and a small oval monogram on the RSVP invitation. Bottom sheets have restrained 4px top corners. No fake architectural outlines are layered over photography.
+Square controls, thin borders, cropped circular rosettes at opposing cover corners, and an oval M monogram. The ornament is deliberately confined to the cover.
 
 ## Components
 
 ### Foundational visual states
 
-Burgundy actions lighten on hover, shift one pixel on press and show dark-gold focus outlines. Selected attendance buttons pair burgundy fill with a checkmark. Disabled controls lower opacity and stop activation. Busy labels preserve button size and show a light spinner. Errors appear inline in deep red with accessible associations.
+Gold primary actions carry black text; hover uses pale gold. Selected attendance buttons pair gold fill with a checkmark. Disabled actions lower opacity; busy labels retain dimensions. Gold focus outlines and text error messages remain visible on dark surfaces.
 
 ### Buttons and actions
 
-Burgundy solid for RSVP and sharing; outline for QR/link actions; antique-gold text links for supporting actions. The historical `gold-button` class is the shared primary action owner and now renders the burgundy stationery variant. All buttons and stepper controls have at least 44px height.
+Gold solid for RSVP and sharing, outlined gold for secondary controls. The gold-button class owns all primary buttons. Buttons and steppers retain at least 44px touch height.
 
 ### Navigation and data display
 
@@ -92,11 +87,11 @@ Lucide, 14–20px line icons. Icons supplement labels; header icon buttons have 
 
 ### Motion
 
-One-second ivory-page fade/lift into the inner invitation, a 24-second 2.5% photographic drift confined to the image frame, subtle light breathing, intersection reveals and 350ms sheet entry. Explicit animation toggle plus system reduced-motion support disables all effects. No particles and no sound. Decorative effects never block RSVP.
+One-second cover fade/lift, subtle framed-photo drift, intersection reveals and 350ms sheet entry. The explicit animation toggle and system reduced-motion preference disable effects. No audio or confetti.
 
 ### Content and data visualization
 
-Warm understated Korean with direct action labels. Preview receipts explicitly state that no actual attendance registration occurred. Real receipts are response confirmations, not entry tickets.
+Only one short invitation line, date, place and response action remain in the body. Repetitive slogans, the second photo section, extended introduction and dress-code prose are removed. Preview registration disclosure remains near the action and in the form/receipt. Generated photography has a compact AI concept caption.
 
 ## Do's and Don'ts
 

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowUpRight,
-  ArrowDown,
   ArrowRight,
   Plus,
   Minus,
@@ -31,6 +30,40 @@ type Receipt = { id: string; mode: "preview" | "live" };
 const key = () =>
   crypto.randomUUID?.() ||
   `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+
+function Ornament() {
+  return (
+    <svg
+      viewBox="0 0 240 240"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <circle cx="120" cy="120" r="112" strokeWidth="0.7" />
+      <circle cx="120" cy="120" r="103" strokeWidth="2" />
+      <circle cx="120" cy="120" r="96" strokeDasharray="1 5" strokeWidth="2" />
+      {Array.from({ length: 16 }, (_, i) => (
+        <g key={i} transform={`rotate(${i * 22.5} 120 120)`}>
+          <path
+            d="M120 30 C95 53 105 78 120 91 C135 78 145 53 120 30Z"
+            strokeWidth="1"
+          />
+          <path
+            d="M120 43 C111 59 113 72 120 80 C127 72 129 59 120 43Z"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M116 19 L120 11 L124 19 L120 25Z"
+            fill="currentColor"
+            stroke="none"
+          />
+        </g>
+      ))}
+      <circle cx="120" cy="120" r="34" strokeWidth="1.5" />
+      <circle cx="120" cy="120" r="27" strokeWidth="0.5" />
+    </svg>
+  );
+}
 
 export default function App() {
   const [opened, setOpened] = useState(false);
@@ -241,34 +274,43 @@ export default function App() {
         weekday: "long",
         timeZone: "Asia/Seoul",
       }).format(new Date(event.start))
-    : "곧 공개됩니다";
+    : "일정 추후 안내";
   const time = event?.start
     ? new Intl.DateTimeFormat("ko-KR", {
         hour: "numeric",
         minute: "2-digit",
         timeZone: "Asia/Seoul",
       }).format(new Date(event.start))
-    : "당신을 위한 특별한 밤";
+    : "";
 
   return (
     <div className={`experience ${opened ? "is-open" : ""}`}>
       {!opened ? (
         <main className={`cover ${opening ? "opening" : ""}`}>
-          <img
-            className="cover-art"
-            src="/assets/calligraphy-cover.png"
-            alt=""
-            fetchPriority="high"
-          />
-          <h1 className="visually-hidden">You're Invited · MATIGNON SEOUL</h1>
+          <div className="cover-frame" aria-hidden="true" />
+          <div className="cover-ornament ornament-top" aria-hidden="true">
+            <Ornament />
+          </div>
+          <div className="cover-ornament ornament-bottom" aria-hidden="true">
+            <Ornament />
+          </div>
           <div className="cover-content">
-            <p className="cover-note">
-              JAZZ &amp; GOOD COMPANY
+            <span className="cover-monogram" aria-hidden="true">
+              M
+            </span>
+            <p className="eyebrow">A PRIVATE EVENING</p>
+            <h1 className="cover-title">
+              You're
               <br />
-              WITH US
+              <span>Invited</span>
+            </h1>
+            <div className="cover-rule" aria-hidden="true">
+              <span />✦<span />
+            </div>
+            <p className="cover-venue">
+              MATIGNON <span>SEOUL</span>
             </p>
-            <p className="cover-venue">MATIGNON SEOUL</p>
-            <p className="cover-korean">당신을 특별한 밤에 초대합니다.</p>
+            <p className="cover-korean">재즈가 흐르는 밤, 당신을 초대합니다.</p>
             <button
               className="open-link"
               onClick={openInvitation}
@@ -276,11 +318,6 @@ export default function App() {
             >
               초대장 열기 <ArrowRight size={17} />
             </button>
-          </div>
-          <div className="cover-bottom">
-            <span className="eyebrow">
-              A PRIVATE INVITATION · MATIGNON SEOUL
-            </span>
           </div>
           {preview && <span className="preview-label">INVITATION PREVIEW</span>}
         </main>
@@ -321,7 +358,7 @@ export default function App() {
               aria-label="MATIGNON 프라이빗 초대장"
             >
               <div className="hero-topline">
-                <span className="eyebrow">YOU ARE CORDIALLY INVITED</span>
+                <span className="eyebrow">YOU ARE INVITED</span>
               </div>
               <div className="hero-heading">
                 <h1>
@@ -329,7 +366,6 @@ export default function App() {
                   <br />
                   <em>after dark.</em>
                 </h1>
-                <p className="hero-subtitle">AN INTIMATE EVENING AT MATIGNON</p>
               </div>
               <div className="hero-frame">
                 <img
@@ -343,79 +379,11 @@ export default function App() {
                   Matignon
                 </span>
               </div>
-              <div className="hero-copy">
-                <p>
-                  잔잔한 선율 사이로,
-                  <br />
-                  당신을 위한 자리를 준비합니다.
-                </p>
-                <span>
-                  {event?.title.toUpperCase() || "MATIGNON PRIVATE INVITATION"}
-                </span>
-              </div>
-              <a className="scroll-hint" href="#invitation">
-                <span>천천히, 밤의 안쪽으로</span>
-                <ArrowDown size={15} />
-              </a>
+              <p className="image-caption">AI 콘셉트 이미지</p>
+              <p className="hero-copy">좋은 음악과 한 잔, 그리고 당신.</p>
             </section>
-            <section className="invitation section-pad reveal" id="invitation">
-              <div className="stationery-ornament" aria-hidden="true">
-                <span />M<span />
-              </div>
-              <span className="eyebrow">AN EVENING, WELL SPENT</span>
-              <h2>
-                The art of
-                <br />
-                <em>a slow evening.</em>
-              </h2>
-              <p className="invitation-lead">서두르지 않아도 좋은 밤.</p>
-              <p className="body-copy">
-                낮게 흐르는 재즈, 잔에 담긴 은은한 빛.
-                <br />
-                그리고 마주 앉아 나누는 이야기.
-                <br />
-                <br />
-                분주했던 하루는 잠시 문밖에 두고,
-                <br />
-                마티뇽에서 당신의 속도로 머물러주세요.
-              </p>
-              <div className="invitation-sign">
-                Yours, <span>Matignon</span>
-              </div>
-            </section>
-            <section className="night-scene reveal" aria-label="마티뇽의 밤">
-              <div className="scene-frame">
-                <img
-                  className="scene-photo"
-                  src="/assets/jazz-detail.png"
-                  alt="따뜻한 테이블 조명 아래 놓인 크리스털 잔과 버건디 좌석 콘셉트"
-                  loading="lazy"
-                  width="1122"
-                  height="1402"
-                />
-              </div>
-              <span className="scene-eyebrow eyebrow">
-                THE MOOD OF THE NIGHT
-              </span>
-              <p>
-                A little jazz.
-                <br />
-                <em>A little closer.</em>
-              </p>
-              <div className="scene-footer">
-                <span>GOOD MUSIC. EVEN BETTER COMPANY.</span>
-              </div>
-            </section>
-            <p className="image-caption">
-              분위기를 위한 AI 콘셉트 이미지 · 실제 공간과 다를 수 있습니다.
-            </p>
             <section className="details section-pad reveal" id="details">
-              <div className="section-heading">
-                <span className="eyebrow">THE RENDEZ-VOUS</span>
-              </div>
-              <h2>
-                The occasion<span>.</span>
-              </h2>
+              <h2 className="visually-hidden">일정과 장소</h2>
               <dl>
                 <div>
                   <dt>
@@ -437,9 +405,7 @@ export default function App() {
                   </dt>
                   <dd>
                     {event?.venue || "MATIGNON SEOUL"}
-                    <small>
-                      {event?.address || "상세 장소는 추후 안내됩니다"}
-                    </small>
+                    <small>{event?.address || "상세 주소 추후 안내"}</small>
                     {event?.address && (
                       <a
                         className="text-link"
@@ -453,27 +419,9 @@ export default function App() {
                   </dd>
                 </div>
               </dl>
-              <div className="dress-note">
-                <span className="eyebrow">COME AS YOU ARE</span>
-                <p>당신다운 모습으로, 가벼운 설렘만 챙겨오세요.</p>
-              </div>
-              {preview && (
-                <p className="preview-note">
-                  미리보기 초대장 · 행사 일정과 상세 장소는 확정 전입니다.
-                </p>
-              )}
             </section>
             <section className="rsvp-section section-pad reveal" id="rsvp">
-              <div className="reply-monogram" aria-hidden="true">
-                M
-              </div>
-              <span className="eyebrow">RÉPONDEZ S’IL VOUS PLAÎT</span>
-              <h2>Kindly reply.</h2>
-              <p>
-                함께할 수 있다면, 알려주세요.
-                <br />
-                당신을 맞이할 순간을 기다립니다.
-              </p>
+              <h2>Be our guest.</h2>
               <button
                 className="gold-button"
                 onClick={() => setModal("rsvp")}
@@ -492,32 +440,16 @@ export default function App() {
               )}
               <span className="rsvp-footnote">
                 {preview
-                  ? "PREVIEW · 실제 참석 등록 전 미리보기"
-                  : "RÉPONDEZ S’IL VOUS PLAÎT"}
+                  ? "미리보기 · 실제 참석 등록은 되지 않습니다"
+                  : "함께할 수 있다면 알려주세요."}
               </span>
             </section>
           </main>
           <footer className="footer">
-            <span className="wordmark">
-              MATIGNON <span>SEOUL</span>
-            </span>
-            <span className="eyebrow">WHERE THE NIGHT BECOMES A MEMORY.</span>
-            <div>
-              <button className="text-link" onClick={() => setModal("share")}>
-                초대장 공유 <Share2 size={13} />
-              </button>
-              <button
-                className="text-link"
-                onClick={() => {
-                  setOpened(false);
-                  setOpening(false);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                처음부터 보기 <RefreshCw size={13} />
-              </button>
-            </div>
-            <small>© MATIGNON SEOUL</small>
+            <button className="text-link" onClick={() => setModal("share")}>
+              초대장 공유 <Share2 size={13} />
+            </button>
+            <small>MATIGNON SEOUL</small>
           </footer>
           <div
             className="sticky-rsvp"
@@ -629,7 +561,7 @@ export default function App() {
               </div>
               <p className="preview-note">
                 {receipt.mode === "preview"
-                  ? "실제 행사 참석 등록이 아닙니다. 입력 내용은 서버에 저장하지 않습니다."
+                  ? "미리보기이며 입력 내용은 저장되지 않습니다."
                   : "응답이 안전하게 저장되었습니다. 이 화면은 입장권이 아닌 응답 확인서입니다."}
               </p>
               <button className="gold-button" onClick={() => setModal(null)}>
@@ -738,13 +670,13 @@ export default function App() {
                     />
                     <span>
                       {preview
-                        ? "실제 등록이 아닌 미리보기임을 확인했습니다."
+                        ? "미리보기임을 확인했습니다."
                         : "개인정보 수집·이용에 동의합니다."}
                     </span>
                   </label>
                   <p id="consent-info" className="consent-info">
                     {preview
-                      ? "테스트용 이름으로 체험해주세요. 입력 내용은 서버에 저장되지 않습니다."
+                      ? "입력 내용은 저장되지 않습니다."
                       : event?.privacyNotice}
                   </p>
                   {errors.consent && (

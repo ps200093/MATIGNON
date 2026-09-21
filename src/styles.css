@@ -1,19 +1,19 @@
 :root {
-  --ink: #191210;
-  --panel: #f8f4e9;
-  --gold: #795f2e;
-  --gold-light: #dbc294;
-  --text: #3d3428;
-  --muted: #726652;
-  --line: #cbbda5;
-  --wine: #381b20;
-  --paper: #f1ecde;
-  --error: #a43830;
+  --ink: #10110f;
+  --panel: #191a17;
+  --gold: #d2af6c;
+  --gold-light: #ead2a2;
+  --text: #eee5d3;
+  --muted: #ada593;
+  --line: #4b4332;
+  --paper: #10110f;
+  --error: #f2a29a;
+  color-scheme: dark;
   --display: "Cormorant Garamond", Georgia, serif;
   --body: "Noto Sans KR", sans-serif;
   --script: "Pinyon Script", cursive;
   color: var(--text);
-  background: #0c0b09;
+  background: #050605;
   font-family: var(--body);
   font-synthesis: none;
   font-weight: 400;
@@ -166,7 +166,7 @@ em {
   box-shadow: 0 -12px 50px #25190d30;
 }
 .sheet::backdrop {
-  background: #211c15a6;
+  background: #000a;
   backdrop-filter: blur(7px);
 }
 .sheet-top {
@@ -213,7 +213,7 @@ em {
 .field input {
   border: 0;
   border-bottom: 1px solid #a58c67;
-  background: #e9dfca40;
+  background: #d2af6c08;
   color: var(--text);
   min-height: 52px;
   width: 100%;
@@ -247,8 +247,8 @@ em {
 }
 .attendance-options > button[aria-pressed="true"] {
   border-color: var(--gold);
-  background: var(--wine);
-  color: var(--panel);
+  background: var(--gold);
+  color: var(--ink);
 }
 .guest-field {
   display: flex;

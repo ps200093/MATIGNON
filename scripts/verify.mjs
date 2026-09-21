@@ -24,7 +24,7 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
   await page.evaluate(() => document.fonts.ready);
-  await page.locator(".cover-art").evaluate((image) => image.decode());
+  await page.getByRole("heading", { name: "You're Invited" }).waitFor();
   await page.screenshot({ path: "artifacts/01-cover.png" });
   let a11y = await new AxeBuilder({ page }).analyze();
   assert.deepEqual(
