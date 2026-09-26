@@ -33,7 +33,7 @@ const key = () =>
 
 export default function App() {
   const [opened, setOpened] = useState(false);
-  const [opening, setOpening] = useState(false);
+  const [curtain, setCurtain] = useState<"closing" | "opening" | "">("");
   const [motion, setMotion] = useState(
     () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
@@ -53,9 +53,7 @@ export default function App() {
   const requestKey = useRef(key());
   const submitted = useRef("");
   const heroRef = useRef<HTMLElement>(null);
-  const openingTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const shareUrl = event?.publicUrl || `${window.location.origin}/`;
   const localUrl = /localhost|127\.0\.0\.1/.test(shareUrl);
   const preview = event?.mode !== "live";
@@ -73,7 +71,7 @@ export default function App() {
   }
   useEffect(() => {
     void loadEvent();
-    return () => clearTimeout(openingTimer.current);
+    return () => timers.current.forEach(clearTimeout);
   }, []);
   useEffect(() => {
     document.documentElement.dataset.motion = motion ? "on" : "off";
@@ -117,15 +115,21 @@ export default function App() {
       .then(setQr)
       .catch(() => setQrError(true));
   }, [modal, shareUrl]);
+  // Beat lengths mirror the curtain keyframes in cover.css.
   function openInvitation() {
-    if (opening) return;
-    setOpening(true);
-    openingTimer.current = setTimeout(
-      () => {
-        setOpened(true);
-        window.scrollTo(0, 0);
-      },
-      motion ? 1000 : 0,
+    if (curtain) return;
+    const enter = () => {
+      setOpened(true);
+      window.scrollTo(0, 0);
+    };
+    if (!motion) return enter();
+    setCurtain("closing");
+    timers.current.push(
+      setTimeout(() => {
+        enter();
+        setCurtain("opening");
+      }, 950),
+      setTimeout(() => setCurtain(""), 2850),
     );
   }
   async function copyLink() {
@@ -252,7 +256,7 @@ export default function App() {
   return (
     <div className={`experience ${opened ? "is-open" : ""}`}>
       {!opened ? (
-        <main className={`cover ${opening ? "opening" : ""}`}>
+        <main className="cover">
           <img
             className="cover-art"
             src="/assets/calligraphy-cover-black.png"
@@ -269,7 +273,7 @@ export default function App() {
             <button
               className="open-link"
               onClick={openInvitation}
-              disabled={opening}
+              disabled={!!curtain}
             >
               초대장 열기 <ArrowRight size={17} />
             </button>
@@ -421,6 +425,28 @@ export default function App() {
             </button>
           </div>
         </>
+      )}
+      {curtain && (
+        <div className={`curtain-stage ${curtain}`} aria-hidden="true">
+          <div className="curtain-veil">
+            <div className="curtain-logo">
+              <img src="/assets/monogram.png" alt="" width="52" height="52" />
+              <p className="wordmark">
+                MATIGNON <span>SEOUL</span>
+              </p>
+            </div>
+          </div>
+          <div className="curtain-panel curtain-left">
+            <div className="curtain-drape">
+              <span className="curtain-edge" />
+            </div>
+          </div>
+          <div className="curtain-panel curtain-right">
+            <div className="curtain-drape">
+              <span className="curtain-edge" />
+            </div>
+          </div>
+        </div>
       )}
       {modal === "share" && (
         <Modal title="Share the night." onClose={() => setModal(null)}>

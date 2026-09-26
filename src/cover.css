@@ -69,6 +69,7 @@
   border: 1px solid #b18b4880;
   color: var(--gold);
   font-size: 11px;
+  transition: opacity 0.3s ease;
 }
 .open-link:hover:not(:disabled) {
   background: var(--gold);
@@ -85,13 +86,279 @@
   letter-spacing: 2px;
   color: var(--muted);
 }
-.opening .cover-art {
-  transform: translateY(-3%) scale(1.06);
+/* Stage curtain. It only exists while the reveal runs: the panels sweep shut,
+   the cover is swapped out behind them, and they part again on the logo.
+   Each panel carries one half of the velvet photograph, so the two line up
+   into a single drape while closed. */
+.curtain-stage {
+  position: fixed;
+  inset: 0;
+  margin: 0 auto;
+  max-width: 480px;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+.curtain-veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
   opacity: 0;
 }
-.opening .cover-content {
-  transform: translateY(-13px);
+.curtain-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--gold);
   opacity: 0;
+}
+.curtain-logo > img {
+  width: 52px;
+  height: auto;
+}
+.curtain-logo > .wordmark {
+  margin-top: 20px;
+  font-size: 21px;
+  letter-spacing: 4px;
+}
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 51%;
+  will-change: transform;
+}
+.curtain-left {
+  left: 0;
+}
+.curtain-right {
+  right: 0;
+}
+.curtain-drape {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    url("/assets/curtain-velvet.webp");
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    196.1% 100%;
+  will-change: transform;
+}
+.curtain-left .curtain-drape {
+  transform-origin: left top;
+  background-position:
+    center,
+    left center;
+}
+.curtain-right .curtain-drape {
+  transform-origin: right top;
+  background-position:
+    center,
+    right center;
+}
+.curtain-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 44px;
+}
+.curtain-left .curtain-edge {
+  right: 0;
+  border-right: 1px solid #f0d18f3d;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.5));
+}
+.curtain-right .curtain-edge {
+  left: 0;
+  border-left: 1px solid #f0d18f3d;
+  background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.5));
+}
+
+/* Closing: the panels ride in, overshoot as they meet, and the fabric keeps
+   swinging for a beat after the rail has stopped. */
+.closing .curtain-veil {
+  animation: veil-in 0.62s ease forwards;
+}
+.closing .curtain-left {
+  animation: close-travel-left 0.72s cubic-bezier(0.34, 0.72, 0.28, 1) both;
+}
+.closing .curtain-right {
+  animation: close-travel-right 0.72s cubic-bezier(0.34, 0.72, 0.28, 1) both;
+}
+.closing .curtain-left .curtain-drape {
+  animation: close-drape-left 0.86s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+.closing .curtain-right .curtain-drape {
+  animation: close-drape-right 0.86s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+
+/* Parting: a short tug against the weight, then the pleats gather toward the
+   outer edge while the hem trails behind and settles. */
+.opening .curtain-veil {
+  opacity: 1;
+  animation: veil-out 0.65s ease 1.25s forwards;
+}
+.opening .curtain-logo {
+  animation: logo-in 0.85s cubic-bezier(0.22, 0.8, 0.3, 1) 0.18s both;
+}
+.opening .curtain-left {
+  animation: part-travel-left 1.35s cubic-bezier(0.5, 0, 0.2, 1) both;
+}
+.opening .curtain-right {
+  animation: part-travel-right 1.35s cubic-bezier(0.5, 0, 0.2, 1) both;
+}
+.opening .curtain-left .curtain-drape {
+  animation: part-drape-left 1.45s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+.opening .curtain-right .curtain-drape {
+  animation: part-drape-right 1.45s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+@keyframes veil-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes veil-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px) scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes close-travel-left {
+  0% {
+    transform: translateX(-100%);
+  }
+  72% {
+    transform: translateX(1.4%);
+  }
+  88% {
+    transform: translateX(-0.6%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes close-travel-right {
+  0% {
+    transform: translateX(100%);
+  }
+  72% {
+    transform: translateX(-1.4%);
+  }
+  88% {
+    transform: translateX(0.6%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes close-drape-left {
+  0% {
+    transform: scaleX(0.55) rotate(0deg);
+  }
+  40% {
+    transform: scaleX(0.86) rotate(-1deg);
+  }
+  70% {
+    transform: scaleX(1.04) rotate(0.55deg);
+  }
+  88% {
+    transform: scaleX(0.99) rotate(-0.2deg);
+  }
+  100% {
+    transform: scaleX(1) rotate(0deg);
+  }
+}
+@keyframes close-drape-right {
+  0% {
+    transform: scaleX(0.55) rotate(0deg);
+  }
+  40% {
+    transform: scaleX(0.86) rotate(1deg);
+  }
+  70% {
+    transform: scaleX(1.04) rotate(-0.55deg);
+  }
+  88% {
+    transform: scaleX(0.99) rotate(0.2deg);
+  }
+  100% {
+    transform: scaleX(1) rotate(0deg);
+  }
+}
+@keyframes part-travel-left {
+  0% {
+    transform: translateX(0);
+  }
+  14% {
+    transform: translateX(1.2%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes part-travel-right {
+  0% {
+    transform: translateX(0);
+  }
+  14% {
+    transform: translateX(-1.2%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes part-drape-left {
+  0% {
+    transform: scaleX(1) rotate(0deg);
+  }
+  14% {
+    transform: scaleX(1.03) rotate(-0.3deg);
+  }
+  55% {
+    transform: scaleX(0.8) rotate(1.15deg);
+  }
+  85% {
+    transform: scaleX(0.63) rotate(0.4deg);
+  }
+  100% {
+    transform: scaleX(0.56) rotate(0deg);
+  }
+}
+@keyframes part-drape-right {
+  0% {
+    transform: scaleX(1) rotate(0deg);
+  }
+  14% {
+    transform: scaleX(1.03) rotate(0.3deg);
+  }
+  55% {
+    transform: scaleX(0.8) rotate(-1.15deg);
+  }
+  85% {
+    transform: scaleX(0.63) rotate(-0.4deg);
+  }
+  100% {
+    transform: scaleX(0.56) rotate(0deg);
+  }
 }
 .visually-hidden {
   position: absolute;

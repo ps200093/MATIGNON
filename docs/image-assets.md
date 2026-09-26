@@ -24,6 +24,13 @@ Final prompt:
 
 > Use case: photorealistic-natural. One portrait editorial hospitality photograph 1024x1280 for a sophisticated private jazz-bar invitation. A quiet close-up at a real luxury jazz lounge: one elegant vintage crystal coupe with amber cocktail on a small polished dark walnut table; a warm tiny pleated ivory silk table lamp at upper left softly illuminates the glass; deep burgundy velvet banquette behind, with beautifully tactile wine red fabric. A subtly out-of-focus black grand piano and burgundy stage curtain in the very far background, barely indicated. Camera at seated eye-level and fairly close, cropped intimate cinematic composition. Glass and drink in middle right, lamp upper left, rich dark wood foreground lower third with calm negative space. Warm tungsten glow, deep chestnut brown shadows, cream highlights, restrained brass detail, shot on medium format with 80mm lens, delicate film grain, natural imperfect reflections, very tasteful high-end magazine photograph. Avoid CGI, illustration, neon, glitter, excessive props, people, ice shaped like gems. No text, no logo, no watermark. The feeling of an unhurried private evening listening to jazz. Full bleed photo, save usable local image asset.
 
+## Stage curtain
+
+- Project file: `public/assets/curtain-velvet.webp`
+- Actual dimensions: 1000 × 1499 px, 119 KB.
+- Use: the reveal curtain that closes over the cover and parts on the logo. Both panels draw this one photograph at `196.1%` width, each anchored to its own side, so they line up as a single drape while shut.
+- Source: photograph by Ambitious Studio\* | Rick Barrett on Unsplash, `https://unsplash.com/photos/a-red-curtain-with-a-black-background-AwsdyjRm-kw`, downloaded through the Unsplash CDN at `w=1000&q=62&fm=webp`. Unsplash License: free for commercial use, attribution not required.
+
 ## Runtime behavior
 
-Both assets are served locally from the project. The cover requests the stage image at high priority; opening the invitation reuses that image. The detail image is lazy loaded. Images do not require an external image host. CSS applies subtle photograph drift and readable text overlays; system reduced motion and the page's motion toggle disable motion.
+Both generated assets are served locally from the project. The cover requests the stage image at high priority; opening the invitation reuses that image. The detail image is lazy loaded. Images do not require an external image host. CSS applies subtle photograph drift and readable text overlays; system reduced motion and the page's motion toggle disable motion.
