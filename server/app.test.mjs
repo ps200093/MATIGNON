@@ -30,13 +30,14 @@ const post = (base, value, headers = {}) =>
     body: JSON.stringify(value),
   });
 
-test("preview accepts valid response but never creates storage", async () => {
+test("preview exposes the October 2 event schedule without creating storage", async () => {
   const dir = mkdtempSync(join(tmpdir(), "matignon-preview-"));
   try {
     await boot({ DATA_DIR: dir }, async (base) => {
       const event = await (await fetch(`${base}/api/event`)).json();
       assert.equal(event.mode, "preview");
-      assert.equal(event.start, null);
+      assert.equal(event.start, "2026-10-02T18:00:00+09:00");
+      assert.equal(event.end, "2026-10-03T03:00:00+09:00");
       const response = await post(base, payload);
       assert.equal(response.status, 200);
       assert.equal((await response.json()).mode, "preview");

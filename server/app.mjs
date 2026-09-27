@@ -4,6 +4,9 @@ import { resolve, extname, sep } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { randomUUID } from "node:crypto";
 
+const DEFAULT_EVENT_START = "2026-10-02T18:00:00+09:00";
+const DEFAULT_EVENT_END = "2026-10-03T03:00:00+09:00";
+
 export function createRequestHandler(env = process.env) {
   const live = env.RSVP_MODE === "live";
   if (live && env.VERCEL)
@@ -36,8 +39,8 @@ export function createRequestHandler(env = process.env) {
     title: env.EVENT_TITLE || "The Private Night",
     venue: env.EVENT_VENUE || "MATIGNON SEOUL",
     address: env.EVENT_ADDRESS || null,
-    start: env.EVENT_START || null,
-    end: env.EVENT_END || null,
+    start: env.EVENT_START || DEFAULT_EVENT_START,
+    end: env.EVENT_END || DEFAULT_EVENT_END,
     publicUrl: env.PUBLIC_URL || null,
     privacyNotice: env.PRIVACY_NOTICE || null,
   };

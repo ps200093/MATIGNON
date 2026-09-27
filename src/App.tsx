@@ -30,6 +30,7 @@ type Receipt = { id: string; mode: "preview" | "live" };
 const key = () =>
   crypto.randomUUID?.() ||
   `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+const couponEndsAt = Date.parse("2026-10-10T00:00:00+09:00");
 
 export default function App() {
   const [opened, setOpened] = useState(false);
@@ -37,6 +38,7 @@ export default function App() {
   const [motion, setMotion] = useState(
     () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+  const [now, setNow] = useState(() => Date.now());
   const [event, setEvent] = useState<EventInfo | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [modal, setModal] = useState<"rsvp" | "share" | null>(null);
@@ -81,6 +83,10 @@ export default function App() {
     const change = () => setMotion(!media.matches);
     media.addEventListener("change", change);
     return () => media.removeEventListener("change", change);
+  }, []);
+  useEffect(() => {
+    const interval = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(interval);
   }, []);
   useEffect(() => {
     if (!toast) return;
@@ -205,38 +211,6 @@ export default function App() {
       setBusy(false);
     }
   }
-  function calendar() {
-    if (!event?.start || !event.end) return;
-    const stamp = (d: string) =>
-      new Date(d)
-        .toISOString()
-        .replace(/[-:]/g, "")
-        .replace(/\.\d{3}/, "");
-    const escape = (s: string) =>
-      s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, "\\$&");
-    const value = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//MATIGNON//Invitation//KO",
-      "BEGIN:VEVENT",
-      `UID:${stamp(event.start)}@matignon`,
-      `DTSTAMP:${stamp(new Date().toISOString())}`,
-      `DTSTART:${stamp(event.start)}`,
-      `DTEND:${stamp(event.end)}`,
-      `SUMMARY:${escape(event.title)}`,
-      `LOCATION:${escape(event.address || event.venue)}`,
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
-    const url = URL.createObjectURL(
-      new Blob([value], { type: "text/calendar;charset=utf-8" }),
-    );
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "matignon.ics";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-  }
   const date = event?.start
     ? new Intl.DateTimeFormat("ko-KR", {
         month: "long",
@@ -246,12 +220,38 @@ export default function App() {
       }).format(new Date(event.start))
     : "일정 추후 안내";
   const time = event?.start
-    ? new Intl.DateTimeFormat("ko-KR", {
-        hour: "numeric",
+    ? `${new Intl.DateTimeFormat("ko-KR", {
+        hour: "2-digit",
         minute: "2-digit",
+        hourCycle: "h23",
         timeZone: "Asia/Seoul",
-      }).format(new Date(event.start))
+      }).format(new Date(event.start))} — 다음 날 ${new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+          hourCycle: "h23",
+          timeZone: "Asia/Seoul",
+        },
+      ).format(new Date(event.end || event.start))}`
     : "";
+  const eventStartsAt = Date.parse(event?.start || "2026-10-02T18:00:00+09:00");
+  const remaining = Math.max(0, eventStartsAt - now);
+  const countdown = remaining
+    ? `${Math.floor(remaining / 86400000)}일 ${String(
+        Math.floor((remaining / 3600000) % 24),
+      ).padStart(2, "0")}:${String(
+        Math.floor((remaining / 60000) % 60),
+      ).padStart(2, "0")}:${String(
+        Math.floor((remaining / 1000) % 60),
+      ).padStart(2, "0")}`
+    : "행사가 시작되었습니다.";
+  const couponStatus =
+    now < eventStartsAt
+      ? "10월 2일부터 사용 가능"
+      : now < couponEndsAt
+        ? "교환 가능"
+        : "교환 기간 종료";
 
   return (
     <div className={`experience ${opened ? "is-open" : ""}`}>
@@ -338,7 +338,6 @@ export default function App() {
                   Matignon
                 </span>
               </div>
-              <p className="image-caption">AI 콘셉트 이미지</p>
               <p className="hero-copy">좋은 음악과 한 잔, 그리고 당신.</p>
             </section>
             <section className="details section-pad reveal" id="details">
@@ -351,11 +350,6 @@ export default function App() {
                   <dd>
                     {date}
                     <small>{time}</small>
-                    {event?.start && (
-                      <button className="text-link" onClick={calendar}>
-                        캘린더에 저장 <Plus size={14} />
-                      </button>
-                    )}
                   </dd>
                 </div>
                 <div>
@@ -378,6 +372,38 @@ export default function App() {
                   </dd>
                 </div>
               </dl>
+              <div className="countdown-wrap">
+                <span className="eyebrow">DOORS OPEN IN</span>
+                <time
+                  className="countdown"
+                  role="timer"
+                  aria-label="행사 시작까지 남은 시간"
+                >
+                  {countdown}
+                </time>
+                <span>10월 2일 18:00, MATIGNON SEOUL</span>
+              </div>
+            </section>
+            <section
+              className="coupon section-pad reveal"
+              aria-labelledby="coupon-title"
+            >
+              <div className="coupon-heading">
+                <span className="eyebrow">WELCOME COCKTAIL</span>
+                <span
+                  className={`coupon-status ${now >= couponEndsAt ? "ended" : ""}`}
+                >
+                  {couponStatus}
+                </span>
+              </div>
+              <h2 id="coupon-title">A cocktail, on us.</h2>
+              <div className="coupon-ticket">
+                <span>ONE WELCOME COCKTAIL</span>
+                <strong>
+                  칵테일 <span className="coupon-quantity">1</span>잔 교환
+                </strong>
+                <p>10.02 — 10.09 · 현장에서 이 쿠폰을 보여주세요</p>
+              </div>
             </section>
             <section className="rsvp-section section-pad reveal" id="rsvp">
               <h2>Be our guest.</h2>

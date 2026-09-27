@@ -53,7 +53,7 @@ The cover uses public/assets/calligraphy-cover-black.png, a black-background edi
 
 ## Layout
 
-Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content is approximately 1100px tall at 390px width, with 22–28px insets. One image, one invitation line, two detail rows and one RSVP section. Sticky response bar and sheets include safe-area insets.
+Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content uses 22–28px insets. One image, an event detail block with a tabular-numeral countdown, one perforated ticket-style welcome-cocktail coupon, and RSVP. Sticky response bar and sheets include safe-area insets.
 
 ## Elevation & Depth
 
@@ -71,7 +71,7 @@ Gold primary actions carry black text; hover uses pale gold. Selected attendance
 
 ### Buttons and actions
 
-Gold solid for RSVP and sharing, outlined gold for secondary controls. The gold-button class owns all primary buttons. Buttons and steppers retain at least 44px touch height.
+Gold solid for RSVP and sharing, outlined gold for secondary controls. The gold-button class owns all primary buttons. Coupon code copy is a small transparent gold action with the same visible focus treatment. Buttons and steppers retain at least 44px touch height.
 
 ### Navigation and data display
 
@@ -91,7 +91,7 @@ One-second cover fade/lift, subtle framed-photo drift, intersection reveals and 
 
 ### Content and data visualization
 
-Only one short invitation line, date, place and response action remain in the body. Repetitive slogans, the second photo section, extended introduction and dress-code prose are removed. Preview registration disclosure remains near the action and in the form/receipt. Generated photography has a compact AI concept caption.
+Only one short invitation line, date, place, start countdown, static welcome-cocktail coupon and response action remain in the body. The coupon states “칵테일 1잔 교환”, its exchange period (October 2–9), and that guests should show it on site. It has no redemption database, login or single-use enforcement; staff validates it operationally. Repetitive slogans, the second photo section, extended introduction and dress-code prose are removed. Preview registration disclosure remains near the action and in the form/receipt. Generated photography has a compact AI concept caption.
 
 ## Do's and Don'ts
 

@@ -40,6 +40,25 @@ try {
     .first()
     .click();
   await page.getByRole("heading", { name: "Jazz after dark." }).waitFor();
+  assert.equal(await page.getByText("AI 콘셉트 이미지").count(), 0);
+  await page.getByRole("heading", { name: "A cocktail, on us." }).waitFor();
+  assert.equal(
+    await page.getByText("칵테일 1잔 교환", { exact: true }).count(),
+    1,
+  );
+  assert.equal(
+    await page
+      .getByText("10.02 — 10.09 · 현장에서 이 쿠폰을 보여주세요")
+      .count(),
+    1,
+  );
+  await page.getByRole("timer", { name: "행사 시작까지 남은 시간" }).waitFor();
+  assert.match(
+    await page
+      .getByRole("timer", { name: "행사 시작까지 남은 시간" })
+      .innerText(),
+    /(?:\d+일\s+\d{2}:\d{2}:\d{2}|행사가 시작되었습니다\.)/,
+  );
   await page.waitForTimeout(1400);
   await page.screenshot({ path: "artifacts/02-hero.png" });
   for (let y = 500; y < 3300; y += 500) {

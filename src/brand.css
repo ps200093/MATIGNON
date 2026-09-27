@@ -105,12 +105,6 @@
   font-family: var(--script);
   font-size: 27px;
 }
-.image-caption {
-  text-align: right;
-  font-size: 8px;
-  color: var(--muted);
-  margin-top: 7px;
-}
 .hero-copy {
   font-size: 12px;
   color: var(--text);
@@ -160,6 +154,110 @@
 }
 .details dd small:empty {
   display: none;
+}
+.countdown-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 27px 0 1px;
+  text-align: center;
+}
+.countdown-wrap .eyebrow {
+  font-size: 8px;
+  letter-spacing: 2.4px;
+}
+.countdown {
+  display: block;
+  margin: 11px 0 8px;
+  color: var(--gold-light);
+  font-family: var(--display);
+  font-size: 29px;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.countdown-wrap > span:last-child {
+  color: var(--muted);
+  font-size: 10px;
+}
+.coupon {
+  padding: 27px 0 2px;
+}
+.coupon-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 11px;
+}
+.coupon-heading .eyebrow {
+  font-size: 8px;
+}
+.coupon-status {
+  color: var(--gold-light);
+  font-size: 9px;
+}
+.coupon-status.ended {
+  color: var(--muted);
+}
+.coupon h2 {
+  color: var(--gold);
+  font-family: var(--script);
+  font-size: 47px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.coupon-ticket {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+  padding: 23px 21px 21px;
+  text-align: center;
+}
+.coupon-ticket::before,
+.coupon-ticket::after {
+  position: absolute;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--paper);
+  content: "";
+}
+.coupon-ticket::before {
+  left: -10px;
+}
+.coupon-ticket::after {
+  right: -10px;
+}
+.coupon-ticket > span {
+  display: block;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 1.75px;
+}
+.coupon-ticket strong {
+  display: block;
+  color: var(--gold-light);
+  font-family: var(--display);
+  font-size: 31px;
+  letter-spacing: 3px;
+  line-height: 1;
+  margin: 17px 0 16px;
+}
+.coupon-quantity {
+  font-family: var(--body);
+  font-size: 0.88em;
+  font-variant-numeric: lining-nums;
+}
+.coupon-ticket p {
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  margin: 0;
+  padding-top: 15px;
 }
 .text-link {
   display: inline-flex;
