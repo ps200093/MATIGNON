@@ -144,7 +144,18 @@ try {
   report.push("320px and 480px: no horizontal overflow");
   const cabaret = await context.newPage();
   await cabaret.goto(`${base}/?v=moulin-rouge`);
-  await cabaret.getByRole("heading", { name: /Cabaret.*After Dark/ }).waitFor();
+  await cabaret
+    .getByRole("button", { name: "커튼 열기", exact: true })
+    .waitFor();
+  await cabaret.getByRole("button", { name: "커튼 열기", exact: true }).click();
+  await cabaret.locator(".moulin-stage").waitFor({ state: "detached" });
+  await cabaret.getByRole("heading", { name: /Live.*Social Club/ }).waitFor();
+  assert.equal(
+    await cabaret
+      .locator(".moulin h1")
+      .evaluate((element) => getComputedStyle(element).animationName),
+    "moulin-sign-on",
+  );
   assert.equal(
     await cabaret
       .getByText("주차 : 매장 바로 옆 발렛 부스 이용 가능", { exact: true })

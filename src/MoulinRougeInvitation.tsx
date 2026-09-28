@@ -17,6 +17,8 @@ export default function MoulinRougeInvitation() {
   const [event, setEvent] = useState<EventInfo | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [notice, setNotice] = useState("");
+  const [curtainOpen, setCurtainOpen] = useState(false);
+  const [curtainOpening, setCurtainOpening] = useState(false);
 
   useEffect(() => {
     void fetch("/api/event", { signal: AbortSignal.timeout(10000) })
@@ -78,10 +80,26 @@ export default function MoulinRougeInvitation() {
     }
   }
 
+  function openCurtain() {
+    if (curtainOpening || curtainOpen) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setCurtainOpen(true);
+      return;
+    }
+    setCurtainOpening(true);
+    window.setTimeout(() => {
+      setCurtainOpen(true);
+      setCurtainOpening(false);
+    }, 1420);
+  }
+
   return (
-    <main className="moulin" aria-label="MATIGNON 라이브 바 초대장">
-      <div className="moulin-curtain moulin-curtain-left" aria-hidden="true" />
-      <div className="moulin-curtain moulin-curtain-right" aria-hidden="true" />
+    <main
+      className={`moulin ${curtainOpen ? "is-open" : ""} ${
+        curtainOpening ? "is-opening" : ""
+      }`}
+      aria-label="MATIGNON 라이브 바 초대장"
+    >
       <header className="moulin-header">
         <span>MATIGNON · SEOUL</span>
         <button onClick={shareInvitation} aria-label="초대장 공유">
@@ -101,8 +119,8 @@ export default function MoulinRougeInvitation() {
         </div>
         <p className="moulin-presents">MATIGNON PRESENTS</p>
         <h1>
-          Cabaret
-          <em>After Dark</em>
+          Live
+          <em>Social Club.</em>
         </h1>
         <p className="moulin-live">
           <Sparkles size={14} aria-hidden="true" /> LIVE MUSIC · COCKTAILS ·
@@ -110,7 +128,7 @@ export default function MoulinRougeInvitation() {
         </p>
       </section>
       <section className="moulin-card" aria-labelledby="moulin-event-title">
-        <h2 id="moulin-event-title">Tonight&apos;s performance</h2>
+        <h2 id="moulin-event-title">Information</h2>
         <dl>
           <div>
             <dt>
@@ -164,6 +182,29 @@ export default function MoulinRougeInvitation() {
       <div className={`moulin-notice ${notice ? "show" : ""}`} role="status">
         {notice}
       </div>
+      {!curtainOpen && (
+        <section
+          className={`moulin-stage ${curtainOpening ? "is-opening" : ""}`}
+          aria-label="카바레 초대장 커튼"
+        >
+          <div className="moulin-stage-copy">
+            <span>MATIGNON · SEOUL</span>
+            <strong>Live Social Club</strong>
+            <p>THE SHOW IS ABOUT TO BEGIN</p>
+            <button onClick={openCurtain} disabled={curtainOpening}>
+              커튼 열기
+            </button>
+          </div>
+          <div
+            className="moulin-stage-panel moulin-stage-panel-left"
+            aria-hidden="true"
+          />
+          <div
+            className="moulin-stage-panel moulin-stage-panel-right"
+            aria-hidden="true"
+          />
+        </section>
+      )}
     </main>
   );
 }
