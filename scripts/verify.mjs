@@ -48,6 +48,14 @@ try {
     1,
   );
   assert.equal(
+    await page.getByText("Soft Opening 가오픈", { exact: true }).count(),
+    1,
+  );
+  assert.equal(
+    await page.getByText("Grand Opening 정식 오픈", { exact: true }).count(),
+    1,
+  );
+  assert.equal(
     await page.getByRole("heading", { name: "A cocktail, on us." }).count(),
     0,
   );
@@ -134,6 +142,40 @@ try {
     await page.screenshot({ path: `artifacts/07-mobile-${width}.png` });
   }
   report.push("320px and 480px: no horizontal overflow");
+  const cabaret = await context.newPage();
+  await cabaret.goto(`${base}/?v=moulin-rouge`);
+  await cabaret.getByRole("heading", { name: /Cabaret.*After Dark/ }).waitFor();
+  assert.equal(
+    await cabaret
+      .getByText("주차 : 매장 바로 옆 발렛 부스 이용 가능", { exact: true })
+      .count(),
+    1,
+  );
+  assert.equal(
+    await cabaret.getByText("Soft Opening 가오픈", { exact: true }).count(),
+    1,
+  );
+  assert.equal(
+    await cabaret.getByText("Grand Opening 정식 오픈", { exact: true }).count(),
+    1,
+  );
+  await cabaret
+    .getByRole("timer", { name: "행사 시작까지 남은 시간" })
+    .waitFor();
+  assert.equal(
+    await cabaret.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+    true,
+  );
+  await cabaret.screenshot({
+    path: "artifacts/08-moulin-rouge.png",
+    fullPage: true,
+  });
+  await cabaret.close();
+  report.push(
+    "Moulin Rouge variant: event details and countdown render at 390px",
+  );
   const reduced = await browser.newPage({
     viewport: { width: 390, height: 844 },
     reducedMotion: "reduce",

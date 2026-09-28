@@ -146,6 +146,29 @@
   line-height: 1.8;
   overflow-wrap: anywhere;
 }
+.opening-schedule {
+  display: grid;
+  gap: 13px;
+}
+.opening-slot {
+  display: grid;
+  gap: 2px;
+}
+.opening-slot + .opening-slot {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.opening-slot strong {
+  color: var(--gold);
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.opening-slot span {
+  color: var(--muted);
+  font-size: 12px;
+}
 .details dd small {
   display: block;
   font-size: 10px;

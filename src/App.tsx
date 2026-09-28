@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import QRCode from "qrcode";
 import Modal from "./Modal";
+import { openingSchedule } from "./openingSchedule";
 
 type EventInfo = {
   mode: "preview" | "live";
@@ -210,22 +211,6 @@ export default function App() {
       setBusy(false);
     }
   }
-  const date = event?.start
-    ? new Intl.DateTimeFormat("ko-KR", {
-        month: "long",
-        day: "numeric",
-        weekday: "long",
-        timeZone: "Asia/Seoul",
-      }).format(new Date(event.start))
-    : "일정 추후 안내";
-  const time = event?.start
-    ? new Intl.DateTimeFormat("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hourCycle: "h23",
-        timeZone: "Asia/Seoul",
-      }).format(new Date(event.start))
-    : "";
   const eventStartsAt = Date.parse(event?.start || "2026-10-02T18:00:00+09:00");
   const remaining = Math.max(0, eventStartsAt - now);
   const countdown = remaining
@@ -341,7 +326,15 @@ export default function App() {
                   <dt>
                     <CalendarDays size={17} /> WHEN
                   </dt>
-                  <dd>{time ? `${date} · ${time}` : date}</dd>
+                  <dd className="opening-schedule">
+                    {openingSchedule.map((opening) => (
+                      <span className="opening-slot" key={opening.label}>
+                        <strong>{opening.label}</strong>
+                        <span>{opening.date}</span>
+                        <span>{opening.time}</span>
+                      </span>
+                    ))}
+                  </dd>
                 </div>
                 <div>
                   <dt>
