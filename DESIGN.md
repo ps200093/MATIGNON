@@ -53,7 +53,7 @@ The cover uses public/assets/calligraphy-cover-black.png, a black-background edi
 
 ## Layout
 
-Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content uses 22–28px insets. One image, an event detail block with a tabular-numeral countdown, one perforated ticket-style welcome-cocktail coupon, and RSVP. Sticky response bar and sheets include safe-area insets.
+Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content uses 22–28px insets. One image, an event detail block with a four-group split-flap airport countdown, one perforated ticket-style welcome-cocktail coupon, and RSVP. Sticky response bar and sheets include safe-area insets.
 
 ## Elevation & Depth
 

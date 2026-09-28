@@ -246,6 +246,17 @@ export default function App() {
         Math.floor((remaining / 1000) % 60),
       ).padStart(2, "0")}`
     : "행사가 시작되었습니다.";
+  const countdownParts = remaining
+    ? [
+        ["DAYS", String(Math.floor(remaining / 86400000)).padStart(2, "0")],
+        [
+          "HRS",
+          String(Math.floor((remaining / 3600000) % 24)).padStart(2, "0"),
+        ],
+        ["MINS", String(Math.floor((remaining / 60000) % 60)).padStart(2, "0")],
+        ["SECS", String(Math.floor((remaining / 1000) % 60)).padStart(2, "0")],
+      ]
+    : [];
   const couponStatus =
     now < eventStartsAt
       ? "10월 2일부터 사용 가능"
@@ -379,7 +390,33 @@ export default function App() {
                   role="timer"
                   aria-label="행사 시작까지 남은 시간"
                 >
-                  {countdown}
+                  {countdownParts.length ? (
+                    <>
+                      <span className="visually-hidden">{countdown}</span>
+                      <span className="countdown-board" aria-hidden="true">
+                        {countdownParts.map(([label, value]) => (
+                          <span className="countdown-segment" key={label}>
+                            <span className="countdown-flaps">
+                              {value.split("").map((digit, index) => (
+                                <span
+                                  className="countdown-flap"
+                                  key={`${label}-${index}-${digit}`}
+                                >
+                                  <b>{digit}</b>
+                                  <span className="countdown-flap-top">
+                                    <b>{digit}</b>
+                                  </span>
+                                </span>
+                              ))}
+                            </span>
+                            <span className="countdown-label">{label}</span>
+                          </span>
+                        ))}
+                      </span>
+                    </>
+                  ) : (
+                    countdown
+                  )}
                 </time>
                 <span>10월 2일 18:00, MATIGNON SEOUL</span>
               </div>
@@ -398,9 +435,9 @@ export default function App() {
               </div>
               <h2 id="coupon-title">A cocktail, on us.</h2>
               <div className="coupon-ticket">
-                <span>ONE WELCOME COCKTAIL</span>
+                <span>칵테일 교환권</span>
                 <strong>
-                  칵테일 <span className="coupon-quantity">1</span>잔 교환
+                  WELCOME COCKTAIL <span className="coupon-quantity"></span>
                 </strong>
                 <p>10.02 — 10.09 · 현장에서 이 쿠폰을 보여주세요</p>
               </div>

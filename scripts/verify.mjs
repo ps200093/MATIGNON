@@ -43,8 +43,8 @@ try {
   assert.equal(await page.getByText("AI 콘셉트 이미지").count(), 0);
   await page.getByRole("heading", { name: "A cocktail, on us." }).waitFor();
   assert.equal(
-    await page.getByText("칵테일 1잔 교환", { exact: true }).count(),
-    1,
+    await page.locator(".coupon-ticket > span").innerText(),
+    "칵테일 교환권",
   );
   assert.equal(
     await page
@@ -53,6 +53,29 @@ try {
     1,
   );
   await page.getByRole("timer", { name: "행사 시작까지 남은 시간" }).waitFor();
+  assert.equal(await page.getByText("DAYS", { exact: true }).count(), 1);
+  assert.equal(await page.getByText("HRS", { exact: true }).count(), 1);
+  assert.equal(await page.getByText("MINS", { exact: true }).count(), 1);
+  assert.equal(await page.getByText("SECS", { exact: true }).count(), 1);
+  assert.equal(
+    await page
+      .locator(".countdown-flap-top")
+      .first()
+      .evaluate((element) => getComputedStyle(element).animationName),
+    "split-flap-top",
+  );
+  const secondsDigit = await page
+    .locator(".countdown-segment")
+    .nth(3)
+    .locator(".countdown-flap")
+    .last()
+    .innerText();
+  await page.waitForFunction((previousDigit) => {
+    const flaps = document.querySelectorAll(
+      ".countdown-segment:nth-child(4) .countdown-flap",
+    );
+    return flaps[flaps.length - 1]?.textContent !== previousDigit;
+  }, secondsDigit);
   assert.match(
     await page
       .getByRole("timer", { name: "행사 시작까지 남은 시간" })
