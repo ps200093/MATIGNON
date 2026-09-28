@@ -39,18 +39,21 @@ try {
     .getByRole("button", { name: "초대장 열기", exact: true })
     .first()
     .click();
-  await page.getByRole("heading", { name: "Jazz after dark." }).waitFor();
+  await page.getByRole("heading", { name: "Live Social Club" }).waitFor();
   assert.equal(await page.getByText("AI 콘셉트 이미지").count(), 0);
-  await page.getByRole("heading", { name: "A cocktail, on us." }).waitFor();
-  assert.equal(
-    await page.locator(".coupon-ticket > span").innerText(),
-    "칵테일 교환권",
-  );
   assert.equal(
     await page
-      .getByText("10.02 — 10.09 · 현장에서 이 쿠폰을 보여주세요")
+      .getByText("주차 : 매장 바로 옆 발렛 부스 이용 가능", { exact: true })
       .count(),
     1,
+  );
+  assert.equal(
+    await page.getByRole("heading", { name: "A cocktail, on us." }).count(),
+    0,
+  );
+  assert.equal(
+    await page.getByRole("button", { name: "RSVP", exact: true }).count(),
+    0,
   );
   await page.getByRole("timer", { name: "행사 시작까지 남은 시간" }).waitFor();
   assert.equal(await page.getByText("DAYS", { exact: true }).count(), 1);
@@ -101,63 +104,6 @@ try {
     })),
     [],
   );
-  await page.getByRole("button", { name: "RSVP", exact: true }).click();
-  for (let i = 0; i < 12; i++) {
-    await page.keyboard.press("Tab");
-    assert.equal(
-      await page.evaluate(() => !!document.activeElement?.closest("dialog")),
-      true,
-    );
-  }
-  await page.keyboard.press("Escape");
-  await page.locator("dialog").waitFor({ state: "detached" });
-  assert.equal(
-    await page
-      .getByRole("button", { name: "RSVP", exact: true })
-      .evaluate((el) => el === document.activeElement),
-    true,
-  );
-  await page.getByRole("button", { name: "RSVP", exact: true }).click();
-  await page.getByRole("button", { name: /다음에 만나요/ }).click();
-  assert.equal(
-    await page.getByRole("button", { name: "참석 인원 늘리기" }).count(),
-    0,
-  );
-  await page.getByRole("button", { name: /함께할게요/ }).click();
-  await page.getByRole("button", { name: "미리보기 응답 보내기" }).click();
-  assert.equal(
-    await page.locator("#name").getAttribute("aria-invalid"),
-    "true",
-  );
-  assert.equal(
-    await page.locator("#name").evaluate((el) => el === document.activeElement),
-    true,
-  );
-  await page.locator("#name").fill("테스트 게스트");
-  assert.equal(
-    await page.locator("#name").getAttribute("aria-invalid"),
-    "false",
-  );
-  await page.getByRole("button", { name: "참석 인원 늘리기" }).click();
-  await page.locator("#consent").check();
-  await page.screenshot({ path: "artifacts/04-rsvp.png" });
-  a11y = await new AxeBuilder({ page }).analyze();
-  assert.deepEqual(
-    a11y.violations.map((x) => ({
-      id: x.id,
-      nodes: x.nodes.map((n) => n.target),
-    })),
-    [],
-  );
-  await page.route("**/api/rsvp", (route) => route.abort());
-  await page.getByRole("button", { name: "미리보기 응답 보내기" }).click();
-  await page.getByRole("alert").filter({ hasText: "연결을 확인" }).waitFor();
-  assert.equal(await page.locator("#name").inputValue(), "테스트 게스트");
-  await page.unroute("**/api/rsvp");
-  await page.getByRole("button", { name: "미리보기 응답 보내기" }).click();
-  await page.getByText("미리보기 응답이 완료되었습니다.").waitFor();
-  await page.screenshot({ path: "artifacts/05-receipt.png" });
-  await page.getByRole("button", { name: "초대장으로 돌아가기" }).click();
   await page
     .getByRole("button", { name: "초대장 공유", exact: true })
     .first()
@@ -173,7 +119,7 @@ try {
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("dialog").count(), 0);
   report.push(
-    "390px: cover, invitation, validation, failure recovery, RSVP success, QR decode, dialog Escape; axe zero violations",
+    "390px: cover, invitation, countdown, QR decode, dialog Escape; axe zero violations",
   );
   for (const width of [320, 480]) {
     await page.setViewportSize({ width, height: 740 });
@@ -183,21 +129,11 @@ try {
       ),
       true,
     );
-    await page.getByRole("button", { name: "응답 확인", exact: true }).click();
-    assert.equal(
-      await page
-        .locator("dialog")
-        .evaluate((el) => el.scrollWidth <= el.clientWidth),
-      true,
-    );
-    await page.keyboard.press("Escape");
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(250);
     await page.screenshot({ path: `artifacts/07-mobile-${width}.png` });
   }
-  report.push(
-    "320px and 480px: no horizontal overflow, accessible response sheet",
-  );
+  report.push("320px and 480px: no horizontal overflow");
   const reduced = await browser.newPage({
     viewport: { width: 390, height: 844 },
     reducedMotion: "reduce",
@@ -207,7 +143,7 @@ try {
     .getByRole("button", { name: "초대장 열기", exact: true })
     .first()
     .click();
-  await reduced.getByRole("heading", { name: "Jazz after dark." }).waitFor();
+  await reduced.getByRole("heading", { name: "Live Social Club" }).waitFor();
   assert.equal(
     await reduced
       .locator(".hero-beam")

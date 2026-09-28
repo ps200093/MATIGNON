@@ -37,11 +37,11 @@ components:
 
 ### Creative North Star
 
-The user's black-and-gold invitation reference supersedes the earlier ivory stationery. The original oversized gold brush-calligraphy artwork is restored on black stock, preserving the sweeping Y and I flourishes and center-right live copy. Inside, one jazz photograph and a single Korean invitation line lead directly to date, venue and RSVP. This is a short invitation, not a long brand landing page.
+The user's black-and-gold invitation reference supersedes the earlier ivory stationery. The original oversized gold brush-calligraphy artwork is restored on black stock, preserving the sweeping Y and I flourishes and center-right live copy. Inside, one jazz photograph and a single Korean invitation line lead directly to date, venue and the split-flap countdown. This is a short invitation, not a long brand landing page.
 
 ### Product context and register
 
-Korean-speaking guests at a MATIGNON brand event/private party, entering by mobile link or QR. English calligraphy establishes mood; Korean owns actions and essential information. Unknown event dates and addresses remain explicitly pending. Cover ornaments and the font-based title were removed in favor of the original expressive brush artwork. The existing accessible RSVP, receipt and sharing flows are retained. Runtime token owner is src/styles.css :root; this frontmatter mirrors its values. src/brand.css owns internal layout and src/cover.css owns the cover. Both consume the shared tokens.
+Korean-speaking guests at a MATIGNON brand event/private party, entering by mobile link or QR. English calligraphy establishes mood; Korean owns actions and essential information. Cover ornaments and the font-based title were removed in favor of the original expressive brush artwork. The accessible sharing flow is retained. Runtime token owner is src/styles.css :root; this frontmatter mirrors its values. src/brand.css owns internal layout and src/cover.css owns the cover. Both consume the shared tokens.
 
 ## Colors
 
@@ -53,7 +53,7 @@ The cover uses public/assets/calligraphy-cover-black.png, a black-background edi
 
 ## Layout
 
-Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content uses 22–28px insets. One image, an event detail block with a four-group split-flap airport countdown, one perforated ticket-style welcome-cocktail coupon, and RSVP. Sticky response bar and sheets include safe-area insets.
+Single document scroller, 320–480px mobile canvas, centered on desktop. Cover fills a viewport with a 660–680px minimum to avoid crowding on short screens. Internal content uses 22–28px insets. One image, an event detail block with address and valet guidance, and a four-group split-flap airport countdown. The footer holds the sharing action and safe-area inset.
 
 ## Elevation & Depth
 
@@ -71,15 +71,15 @@ Gold primary actions carry black text; hover uses pale gold. Selected attendance
 
 ### Buttons and actions
 
-Gold solid for RSVP and sharing, outlined gold for secondary controls. The gold-button class owns all primary buttons. Coupon code copy is a small transparent gold action with the same visible focus treatment. Buttons and steppers retain at least 44px touch height.
+Gold solid is reserved for primary modal actions and outlined gold for secondary controls. Sharing actions retain visible focus treatment and at least 44px touch height.
 
 ### Navigation and data display
 
-Anchors navigate to content; fixed RSVP action opens the same sheet at every location. Unconfirmed date and address show explicit pending copy. No tables or list pagination.
+The footer exposes sharing; no attendance-response action is shown. No tables or list pagination.
 
 ### Forms and overlays
 
-`Modal.tsx` owns native dialog showModal, inert background, keyboard trap, Escape, scroll lock and focus restoration. `App.tsx` owns the single RSVP form, validation and live-region feedback. Attendance uses two pressed-state buttons. Guest count uses labeled stepper buttons, no dropdown. No browser validation bubbles. Inputs survive failed requests. Preview does not persist personal data. Live mode requires the operator-provided privacy notice and stores only name, attendance, guest count, idempotency key and timestamp. Toast is an auxiliary status; inline errors remain authoritative.
+`Modal.tsx` owns native dialog showModal, inert background, keyboard trap, Escape, scroll lock and focus restoration. `App.tsx` owns QR and link sharing feedback. Toast is an auxiliary status.
 
 ### Iconography
 
@@ -91,7 +91,7 @@ One-second cover fade/lift, subtle framed-photo drift, intersection reveals and 
 
 ### Content and data visualization
 
-Only one short invitation line, date, place, start countdown, static welcome-cocktail coupon and response action remain in the body. The coupon states “칵테일 1잔 교환”, its exchange period (October 2–9), and that guests should show it on site. It has no redemption database, login or single-use enforcement; staff validates it operationally. Repetitive slogans, the second photo section, extended introduction and dress-code prose are removed. Preview registration disclosure remains near the action and in the form/receipt. Generated photography has a compact AI concept caption.
+Only one short invitation line, date and start time, place with valet guidance, and start countdown remain in the body. Repetitive slogans, the second photo section, cocktail coupon, attendance response, extended introduction and dress-code prose are removed.
 
 ## Do's and Don'ts
 

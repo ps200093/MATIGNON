@@ -30,7 +30,6 @@ type Receipt = { id: string; mode: "preview" | "live" };
 const key = () =>
   crypto.randomUUID?.() ||
   `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
-const couponEndsAt = Date.parse("2026-10-10T00:00:00+09:00");
 
 export default function App() {
   const [opened, setOpened] = useState(false);
@@ -220,20 +219,12 @@ export default function App() {
       }).format(new Date(event.start))
     : "일정 추후 안내";
   const time = event?.start
-    ? `${new Intl.DateTimeFormat("ko-KR", {
+    ? new Intl.DateTimeFormat("ko-KR", {
         hour: "2-digit",
         minute: "2-digit",
         hourCycle: "h23",
         timeZone: "Asia/Seoul",
-      }).format(new Date(event.start))} — 다음 날 ${new Intl.DateTimeFormat(
-        "ko-KR",
-        {
-          hour: "2-digit",
-          minute: "2-digit",
-          hourCycle: "h23",
-          timeZone: "Asia/Seoul",
-        },
-      ).format(new Date(event.end || event.start))}`
+      }).format(new Date(event.start))
     : "";
   const eventStartsAt = Date.parse(event?.start || "2026-10-02T18:00:00+09:00");
   const remaining = Math.max(0, eventStartsAt - now);
@@ -257,12 +248,6 @@ export default function App() {
         ["SECS", String(Math.floor((remaining / 1000) % 60)).padStart(2, "0")],
       ]
     : [];
-  const couponStatus =
-    now < eventStartsAt
-      ? "10월 2일부터 사용 가능"
-      : now < couponEndsAt
-        ? "교환 가능"
-        : "교환 기간 종료";
 
   return (
     <div className={`experience ${opened ? "is-open" : ""}`}>
@@ -280,7 +265,6 @@ export default function App() {
             <p className="cover-venue">
               MATIGNON <span>SEOUL</span>
             </p>
-            <p className="cover-korean">재즈가 흐르는 밤, 당신을 초대합니다.</p>
             <button
               className="open-link"
               onClick={openInvitation}
@@ -289,7 +273,6 @@ export default function App() {
               초대장 열기 <ArrowRight size={17} />
             </button>
           </div>
-          {preview && <span className="preview-label">INVITATION PREVIEW</span>}
         </main>
       ) : (
         <>
@@ -332,9 +315,9 @@ export default function App() {
               </div>
               <div className="hero-heading">
                 <h1>
-                  Jazz
+                  Live
                   <br />
-                  <em>after dark.</em>
+                  <em>Social Club.</em>
                 </h1>
               </div>
               <div className="hero-frame">
@@ -358,10 +341,7 @@ export default function App() {
                   <dt>
                     <CalendarDays size={17} /> WHEN
                   </dt>
-                  <dd>
-                    {date}
-                    <small>{time}</small>
-                  </dd>
+                  <dd>{time ? `${date} · ${time}` : date}</dd>
                 </div>
                 <div>
                   <dt>
@@ -369,7 +349,12 @@ export default function App() {
                   </dt>
                   <dd>
                     {event?.venue || "MATIGNON SEOUL"}
-                    <small>{event?.address || "상세 주소 추후 안내"}</small>
+                    <small>
+                      {event?.address || "서울 강남구 압구정로50길 24"}
+                    </small>
+                    <small className="parking-note">
+                      주차 : 매장 바로 옆 발렛 부스 이용 가능
+                    </small>
                     {event?.address && (
                       <a
                         className="text-link"
@@ -421,51 +406,6 @@ export default function App() {
                 <span>10월 2일 18:00, MATIGNON SEOUL</span>
               </div>
             </section>
-            <section
-              className="coupon section-pad reveal"
-              aria-labelledby="coupon-title"
-            >
-              <div className="coupon-heading">
-                <span className="eyebrow">WELCOME COCKTAIL</span>
-                <span
-                  className={`coupon-status ${now >= couponEndsAt ? "ended" : ""}`}
-                >
-                  {couponStatus}
-                </span>
-              </div>
-              <h2 id="coupon-title">A cocktail, on us.</h2>
-              <div className="coupon-ticket">
-                <span>칵테일 교환권</span>
-                <strong>
-                  WELCOME COCKTAIL <span className="coupon-quantity"></span>
-                </strong>
-                <p>10.02 — 10.09 · 현장에서 이 쿠폰을 보여주세요</p>
-              </div>
-            </section>
-            <section className="rsvp-section section-pad reveal" id="rsvp">
-              <h2>Be our guest.</h2>
-              <button
-                className="gold-button"
-                onClick={() => setModal("rsvp")}
-                disabled={!event}
-              >
-                {receipt ? "내 응답 확인하기" : "참석 여부 알려주기"}
-                <ArrowUpRight size={19} />
-              </button>
-              {loadError && (
-                <div className="load-error" role="alert">
-                  초대장 정보를 불러오지 못했습니다.
-                  <button className="text-link" onClick={loadEvent}>
-                    <RefreshCw size={14} /> 다시 불러오기
-                  </button>
-                </div>
-              )}
-              <span className="rsvp-footnote">
-                {preview
-                  ? "미리보기 · 실제 참석 등록은 되지 않습니다"
-                  : "함께할 수 있다면 알려주세요."}
-              </span>
-            </section>
           </main>
           <footer className="footer">
             <button className="text-link" onClick={() => setModal("share")}>
@@ -473,20 +413,6 @@ export default function App() {
             </button>
             <small>MATIGNON SEOUL</small>
           </footer>
-          <div
-            className="sticky-rsvp"
-            role="region"
-            aria-label="참석 응답 바로가기"
-          >
-            <div>
-              <span className="eyebrow">YOU'RE INVITED</span>
-              <span>{event?.venue || "MATIGNON SEOUL"}</span>
-            </div>
-            <button onClick={() => setModal("rsvp")} disabled={!event}>
-              {receipt ? "응답 확인" : "RSVP"}
-              <ArrowUpRight size={17} />
-            </button>
-          </div>
         </>
       )}
       {curtain && (
