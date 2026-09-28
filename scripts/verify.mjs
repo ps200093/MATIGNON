@@ -24,9 +24,12 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
   await page.evaluate(() => document.fonts.ready);
-  await page.getByRole("heading", { name: "You're Invited" }).waitFor();
-  await page.locator(".cover-art").evaluate((image) => image.decode());
-  await page.screenshot({ path: "artifacts/01-cover.png" });
+  await page.locator(".intro-video").waitFor();
+  assert.equal(
+    await page.getByRole("button", { name: "초대장 열기" }).count(),
+    0,
+  );
+  await page.screenshot({ path: "artifacts/01-intro.png" });
   let a11y = await new AxeBuilder({ page }).analyze();
   assert.deepEqual(
     a11y.violations.map((x) => ({
@@ -35,10 +38,7 @@ try {
     })),
     [],
   );
-  await page
-    .getByRole("button", { name: "초대장 열기", exact: true })
-    .first()
-    .click();
+  await page.locator(".intro-video video").dispatchEvent("ended");
   await page.getByRole("heading", { name: "Live Social Club" }).waitFor();
   assert.equal(await page.getByText("AI 콘셉트 이미지").count(), 0);
   assert.equal(
@@ -127,7 +127,7 @@ try {
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("dialog").count(), 0);
   report.push(
-    "390px: cover, invitation, countdown, QR decode, dialog Escape; axe zero violations",
+    "390px: automatic video intro, invitation, countdown, QR decode, dialog Escape; axe zero violations",
   );
   for (const width of [320, 480]) {
     await page.setViewportSize({ width, height: 740 });
@@ -144,17 +144,13 @@ try {
   report.push("320px and 480px: no horizontal overflow");
   const cabaret = await context.newPage();
   await cabaret.goto(`${base}/?v=moulin-rouge`);
-  await cabaret
-    .getByRole("button", { name: "초대장 열기", exact: true })
-    .waitFor();
+  await cabaret.locator(".intro-video").waitFor();
   assert.equal(
-    await cabaret.getByText("커튼 열기", { exact: true }).count(),
+    await cabaret.getByRole("button", { name: "초대장 열기" }).count(),
     0,
   );
-  await cabaret
-    .getByRole("button", { name: "초대장 열기", exact: true })
-    .click();
-  await cabaret.locator(".moulin-stage").waitFor({ state: "detached" });
+  await cabaret.locator(".intro-video video").dispatchEvent("ended");
+  await cabaret.locator(".intro-video").waitFor({ state: "detached" });
   await cabaret.waitForFunction(() =>
     document.querySelector(".moulin")?.classList.contains("is-spotlight-on"),
   );
@@ -207,10 +203,7 @@ try {
     reducedMotion: "reduce",
   });
   await reduced.goto(base);
-  await reduced
-    .getByRole("button", { name: "초대장 열기", exact: true })
-    .first()
-    .click();
+  await reduced.locator(".intro-video video").dispatchEvent("ended");
   await reduced.getByRole("heading", { name: "Live Social Club" }).waitFor();
   assert.equal(
     await reduced
