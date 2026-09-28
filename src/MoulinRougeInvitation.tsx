@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CalendarDays, MapPin, Share2, Sparkles } from "lucide-react";
-import IntroVideo from "./IntroVideo";
 import { openingSchedule } from "./openingSchedule";
 
 type EventInfo = {
@@ -18,7 +17,8 @@ export default function MoulinRougeInvitation() {
   const [event, setEvent] = useState<EventInfo | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [notice, setNotice] = useState("");
-  const [introComplete, setIntroComplete] = useState(false);
+  const [curtainOpen, setCurtainOpen] = useState(false);
+  const [curtainOpening, setCurtainOpening] = useState(false);
   const [spotlightOn, setSpotlightOn] = useState(false);
 
   useEffect(() => {
@@ -38,16 +38,6 @@ export default function MoulinRougeInvitation() {
     const timeout = window.setTimeout(() => setNotice(""), 2600);
     return () => window.clearTimeout(timeout);
   }, [notice]);
-
-  useEffect(() => {
-    if (!introComplete) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setSpotlightOn(true);
-      return;
-    }
-    const spotlightDelay = window.setTimeout(() => setSpotlightOn(true), 360);
-    return () => window.clearTimeout(spotlightDelay);
-  }, [introComplete]);
 
   const start = event?.start || fallbackStart;
   const startsAt = Date.parse(start);
@@ -91,11 +81,26 @@ export default function MoulinRougeInvitation() {
     }
   }
 
+  function openCurtain() {
+    if (curtainOpening || curtainOpen) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setCurtainOpen(true);
+      setSpotlightOn(true);
+      return;
+    }
+    setCurtainOpening(true);
+    window.setTimeout(() => {
+      setCurtainOpen(true);
+      setCurtainOpening(false);
+      window.setTimeout(() => setSpotlightOn(true), 360);
+    }, 1420);
+  }
+
   return (
     <main
-      className={`moulin ${introComplete ? "is-open" : ""} ${
-        spotlightOn ? "is-spotlight-on" : ""
-      }`}
+      className={`moulin ${curtainOpen ? "is-open" : ""} ${
+        curtainOpening ? "is-opening" : ""
+      } ${spotlightOn ? "is-spotlight-on" : ""}`}
       aria-label="MATIGNON 라이브 바 초대장"
     >
       <div className="moulin-spotlight" aria-hidden="true" />
@@ -181,8 +186,30 @@ export default function MoulinRougeInvitation() {
       <div className={`moulin-notice ${notice ? "show" : ""}`} role="status">
         {notice}
       </div>
-      {!introComplete && (
-        <IntroVideo onComplete={() => setIntroComplete(true)} />
+      {!curtainOpen && (
+        <section
+          className={`moulin-stage ${curtainOpening ? "is-opening" : ""}`}
+          aria-label="카바레 초대장 커튼"
+        >
+          <div className="moulin-stage-copy">
+            <span>MATIGNON · SEOUL</span>
+            <strong>Live Social Club</strong>
+          </div>
+          <div
+            className="moulin-stage-panel moulin-stage-panel-left"
+            aria-hidden="true"
+          />
+          <div
+            className="moulin-stage-panel moulin-stage-panel-right"
+            aria-hidden="true"
+          />
+          <button
+            className="moulin-stage-hit"
+            onClick={openCurtain}
+            disabled={curtainOpening}
+            aria-label="초대장 열기"
+          />
+        </section>
       )}
     </main>
   );

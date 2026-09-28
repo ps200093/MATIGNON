@@ -144,13 +144,14 @@ try {
   report.push("320px and 480px: no horizontal overflow");
   const cabaret = await context.newPage();
   await cabaret.goto(`${base}/?v=moulin-rouge`);
-  await cabaret.locator(".intro-video").waitFor();
-  assert.equal(
-    await cabaret.getByRole("button", { name: "초대장 열기" }).count(),
-    0,
-  );
-  await cabaret.locator(".intro-video video").dispatchEvent("ended");
-  await cabaret.locator(".intro-video").waitFor({ state: "detached" });
+  await cabaret
+    .getByRole("button", { name: "초대장 열기", exact: true })
+    .waitFor();
+  assert.equal(await cabaret.locator(".intro-video").count(), 0);
+  await cabaret
+    .getByRole("button", { name: "초대장 열기", exact: true })
+    .click();
+  await cabaret.locator(".moulin-stage").waitFor({ state: "detached" });
   await cabaret.waitForFunction(() =>
     document.querySelector(".moulin")?.classList.contains("is-spotlight-on"),
   );
