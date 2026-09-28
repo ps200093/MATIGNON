@@ -19,6 +19,7 @@ export default function MoulinRougeInvitation() {
   const [notice, setNotice] = useState("");
   const [curtainOpen, setCurtainOpen] = useState(false);
   const [curtainOpening, setCurtainOpening] = useState(false);
+  const [spotlightOn, setSpotlightOn] = useState(false);
 
   useEffect(() => {
     void fetch("/api/event", { signal: AbortSignal.timeout(10000) })
@@ -84,12 +85,14 @@ export default function MoulinRougeInvitation() {
     if (curtainOpening || curtainOpen) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setCurtainOpen(true);
+      setSpotlightOn(true);
       return;
     }
     setCurtainOpening(true);
     window.setTimeout(() => {
       setCurtainOpen(true);
       setCurtainOpening(false);
+      window.setTimeout(() => setSpotlightOn(true), 360);
     }, 1420);
   }
 
@@ -97,9 +100,10 @@ export default function MoulinRougeInvitation() {
     <main
       className={`moulin ${curtainOpen ? "is-open" : ""} ${
         curtainOpening ? "is-opening" : ""
-      }`}
+      } ${spotlightOn ? "is-spotlight-on" : ""}`}
       aria-label="MATIGNON 라이브 바 초대장"
     >
+      <div className="moulin-spotlight" aria-hidden="true" />
       <header className="moulin-header">
         <span>MATIGNON · SEOUL</span>
         <button onClick={shareInvitation} aria-label="초대장 공유">
@@ -190,10 +194,6 @@ export default function MoulinRougeInvitation() {
           <div className="moulin-stage-copy">
             <span>MATIGNON · SEOUL</span>
             <strong>Live Social Club</strong>
-            <p>THE SHOW IS ABOUT TO BEGIN</p>
-            <button onClick={openCurtain} disabled={curtainOpening}>
-              커튼 열기
-            </button>
           </div>
           <div
             className="moulin-stage-panel moulin-stage-panel-left"
@@ -202,6 +202,12 @@ export default function MoulinRougeInvitation() {
           <div
             className="moulin-stage-panel moulin-stage-panel-right"
             aria-hidden="true"
+          />
+          <button
+            className="moulin-stage-hit"
+            onClick={openCurtain}
+            disabled={curtainOpening}
+            aria-label="초대장 열기"
           />
         </section>
       )}

@@ -145,16 +145,31 @@ try {
   const cabaret = await context.newPage();
   await cabaret.goto(`${base}/?v=moulin-rouge`);
   await cabaret
-    .getByRole("button", { name: "커튼 열기", exact: true })
+    .getByRole("button", { name: "초대장 열기", exact: true })
     .waitFor();
-  await cabaret.getByRole("button", { name: "커튼 열기", exact: true }).click();
+  assert.equal(
+    await cabaret.getByText("커튼 열기", { exact: true }).count(),
+    0,
+  );
+  await cabaret
+    .getByRole("button", { name: "초대장 열기", exact: true })
+    .click();
   await cabaret.locator(".moulin-stage").waitFor({ state: "detached" });
+  await cabaret.waitForFunction(() =>
+    document.querySelector(".moulin")?.classList.contains("is-spotlight-on"),
+  );
   await cabaret.getByRole("heading", { name: /Live.*Social Club/ }).waitFor();
   assert.equal(
     await cabaret
       .locator(".moulin h1")
       .evaluate((element) => getComputedStyle(element).animationName),
     "moulin-sign-on",
+  );
+  assert.equal(
+    await cabaret
+      .locator(".moulin-spotlight")
+      .evaluate((element) => getComputedStyle(element).animationName),
+    "moulin-spotlight-on",
   );
   assert.equal(
     await cabaret
